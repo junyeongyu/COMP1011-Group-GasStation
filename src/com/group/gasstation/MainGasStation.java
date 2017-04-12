@@ -9,22 +9,27 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 public class MainGasStation extends JFrame {
+    protected JFrame frameSunoco;
     private JPanel panelNorth, panelCentre,
-                   panelFirstTab, panelSecondTab, panelThirdTab;
+                   panelFirstTab, panelSecondTab;
     private JTabbedPane tabTabPane;
     
     public MainGasStation() {
         super("Tabs");
         
-        /// 1. Intialize all componentss
+        /// 1. Intialize all components
+        frameSunoco = new FrameSunoco(this);
         tabTabPane = new JTabbedPane();
         panelNorth = new JPanel();
         panelCentre = new JPanel();
         
         /// 2. Set properties including eventhandlers
+        frameSunoco.setVisible(false);
         tabTabPane.addTab("First Tab", null, createFirstTab(), "My First Tab");
-        tabTabPane.addTab("Second Tab", null, createFirstTab(), "My Second Tab");
-        tabTabPane.addTab("Third Tab", null, createFirstTab(), "My Third Tab");
+        tabTabPane.addTab("Second Tab", null, createSecondTab(), "My Second Tab");
+        
+        // TODO: Test (it will be move into neccessary functions)
+        openPopup();
         
         /// 3. Decide relationship between components
         panelNorth.setLayout(new GridLayout(3, 2));
@@ -49,11 +54,10 @@ public class MainGasStation extends JFrame {
     }
     private JPanel createSecondTab() {
         panelSecondTab = new PanelSecondTab(this);
-        return panelFirstTab;
+        return panelSecondTab;
     }
-    private JPanel createThirdTab() {
-        panelThirdTab = new PanelThirdTab(this);
-        return panelFirstTab;
+    protected void openPopup() { // called from child component
+        frameSunoco.setVisible(true);
     }
     
     public static void main(String[] args) {
