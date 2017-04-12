@@ -53,7 +53,7 @@ public class FrameSunoco extends JFrame {
     
     // Default Constructor
     //public FrameSunoco() {}
-    public FrameSunoco(MainGasStation main) {
+    public FrameSunoco(GasStation main) {
         super("Pump");
         
         /// 1. Intialize all componentss

@@ -1,5 +1,6 @@
 package com.group.gasstation;
 
+import com.group.gasstation.db.DBManager;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JFrame;
@@ -8,13 +9,14 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-public class MainGasStation extends JFrame {
+public class GasStation extends JFrame {
+    protected DBManager db;
     protected JFrame frameSunoco;
     private JPanel panelNorth, panelCentre,
                    panelFirstTab, panelSecondTab;
     private JTabbedPane tabTabPane;
     
-    public MainGasStation() {
+    public GasStation() {
         super("Tabs");
         
         /// 1. Intialize all components
@@ -58,9 +60,5 @@ public class MainGasStation extends JFrame {
     }
     protected void openPopup() { // called from child component
         frameSunoco.setVisible(true);
-    }
-    
-    public static void main(String[] args) {
-        new MainGasStation();
     }
 }

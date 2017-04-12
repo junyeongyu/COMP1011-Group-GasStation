@@ -6,10 +6,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 public class PanelFirstTab extends JPanel {
-    private MainGasStation main;
+    private GasStation main;
     
     //public PanelFirstTab() {}
-    public PanelFirstTab(MainGasStation mainGasStation) {
+    public PanelFirstTab(GasStation mainGasStation) {
         main = mainGasStation;
         
         /// 1. Intialize all componentss
