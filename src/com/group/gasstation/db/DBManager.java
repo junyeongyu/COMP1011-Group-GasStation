@@ -70,6 +70,20 @@ public class DBManager {
         return list;
     }
     public int execute(String query) {
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(query); // UPDATE EMPLOYEE colum='aaa' where id = 'id'
+        }catch (SQLException error) {
+            error.printStackTrace();
+        } catch (Exception error) {
+            error.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return 0;
     }
 
