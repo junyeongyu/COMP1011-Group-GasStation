@@ -91,7 +91,7 @@ public class DBManager {
 
     private void preprocess () {
         // Database=acsm_855816b26cc82d2;Data Source=us-cdbr-azure-southcentral-e.cloudapp.net;User Id=bdd2a9f50ea66c;Password=aa83c352
-        final String DB_URL = "jdbc:mysql://us-cdbr-azure-southcentral-e.cloudapp.net:3306/acsm_855816b26cc82d2?user=bdd2a9f50ea66c&password=aa83c352";
+        final String DB_URL = "jdbc:mysql://sql.computerstudi.es:3306/gc200328206?user=gc200328206&password=?rVT4!2t";
         
         try {
             // try to create connection

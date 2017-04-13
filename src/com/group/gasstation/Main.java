@@ -9,7 +9,7 @@ public class Main {
         DBManager dbManager = new DBManager();
 
         // test query
-        final String query = "SELECT * FROM EMPLOYEE";
+        final String query = "SELECT * FROM employee";
         List<Map<String, Object>> list = dbManager.getList(query);
         System.out.println(list);
         
