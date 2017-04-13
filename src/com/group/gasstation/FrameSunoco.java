@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -55,6 +57,9 @@ public class FrameSunoco extends JFrame {
     
     // Preset Amount
     private int presetAmount = 0;
+    
+    // true while pumping
+    private boolean isPumping = false;
     
     // Default Constructor
     //public FrameSunoco() {}
@@ -180,6 +185,31 @@ public class FrameSunoco extends JFrame {
             // Update labelPreset when sliderPreset is changed
             presetAmount = sliderPreset.getValue();
             labelPreset.setText("Preset Purchase Amount" + (presetAmount == 0? "" : " $" + presetAmount));
+        });
+        buttonStart.addActionListener((e)-> {
+            // Handles pumping gas
+            isPumping = !isPumping;
+            buttonStart.setText(!isPumping ? "Start" : "Stop");
+            
+            new Thread(new Runnable() {
+                @Override
+                public void run()
+                {
+                    long now = System.currentTimeMillis();
+                    long then = now;
+                    
+                    while(isPumping)
+                    {
+                        now = System.currentTimeMillis();
+                        if(now - then > 500)
+                        {
+                            then = now;
+                            
+                            System.out.println("GLUB");
+                        }
+                    }
+                }
+            }).start();
         });
         // Button for exiting application
         buttonExit.addActionListener((e) -> {
