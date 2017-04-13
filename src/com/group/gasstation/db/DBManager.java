@@ -19,11 +19,11 @@ public class DBManager {
     private ResultSet rs;
     
     public DBManager() {
-        preprocess();
+        //preprocess();
     }
     public Map<String,Object> getObject(String query) {
         List list = getList(query);
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
         return getList(query).get(0);
@@ -31,6 +31,7 @@ public class DBManager {
     public List<Map<String,Object>> getList(String query) {
         List<Map<String,Object>> list = new ArrayList<>();
         try {
+            preprocess();
             // create statement object from connection
             stmt = conn.createStatement();
             // execute the statement and store the resultset.
@@ -59,10 +60,9 @@ public class DBManager {
             error.printStackTrace();
         } finally {
             try {
-                
                 rs.close();
                 stmt.close();
-                //conn.close();
+                conn.close();
             } catch (SQLException ex) {
                 Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -71,15 +71,17 @@ public class DBManager {
     }
     public int execute(String query) {
         try {
+            preprocess();
             stmt = conn.createStatement();
             stmt.executeUpdate(query); // UPDATE EMPLOYEE colum='aaa' where id = 'id'
-        }catch (SQLException error) {
+        } catch (SQLException error) {
             error.printStackTrace();
         } catch (Exception error) {
             error.printStackTrace();
         } finally {
             try {
                 stmt.close();
+                conn.close();
             } catch (SQLException ex) {
                 Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -96,14 +98,11 @@ public class DBManager {
             conn = DriverManager.getConnection(DB_URL);
         } catch (SQLException error) {
             error.printStackTrace();
-        } catch (Exception error) {
-            error.printStackTrace();
-        } finally {
-            /*try {
+            try {
                 conn.close();
             } catch (SQLException ex) {
                 Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
-        }
+            }
+        } 
     }
 }
