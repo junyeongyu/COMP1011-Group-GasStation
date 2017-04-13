@@ -317,6 +317,55 @@ public class FrameSunoco extends JFrame {
         setVisible(true); // show the window
     }
     
+    private String[] getValues (double value) {
+        String text = String.valueOf(value);
+        String beforeDot = text.split("\\.")[0];
+        String afterDot = text.split("\\.")[1];
+        String[] numbers = new String [] {"0", "0", "0", "0", "0"};
+        
+        if (beforeDot.length() == 1) {
+            numbers[2] = beforeDot;
+        } else if (beforeDot.length() == 2) {
+            numbers[1] = beforeDot.substring(0,1);
+            numbers[2] = beforeDot.substring(1,2);
+        } else if (beforeDot.length() == 3) {
+            numbers[0] = beforeDot.substring(0,1);
+            numbers[1] = beforeDot.substring(1,2);
+            numbers[2] = beforeDot.substring(2,3);
+        } else {
+            throw new RuntimeException("You can not put more than 999.99");
+        }
+        
+        if (afterDot.length() <= 1) {
+            numbers[3] = afterDot;
+        } else if (afterDot.length() <= 2) {
+            numbers[3] = afterDot.substring(0,1);
+            numbers[4] = afterDot.substring(1,2);
+        }
+        
+        return numbers;
+    }
+    private void setSalesValue(String[] digits) {
+        labelSaleA.setText(digits[0]);
+        labelSaleB.setText(digits[1]);
+        labelSaleC.setText(digits[2]);
+        labelSaleD.setText(digits[3]);
+        labelSaleE.setText(digits[4]);        
+    }
+    private void setSalesValue(double value) {
+        setSalesValue(getValues(value));
+    }
+    private void setLitersValue(String[] digits) {
+        labelLiterA.setText(digits[0]);
+        labelLiterB.setText(digits[1]);
+        labelLiterC.setText(digits[2]);
+        labelLiterD.setText(digits[3]);
+        labelLiterE.setText(digits[4]);        
+    }
+    private void setLitersValue(double value) {
+        setSalesValue(getValues(value));
+    }
+    
     // Update required JLabels
     private void updateGasPrice(double price)
     {
@@ -327,6 +376,28 @@ public class FrameSunoco extends JFrame {
                 -> digits = ['2', '0', '3', '6', '7']
         */
         price = Math.floor(price * 100) / 100;
+        setSalesValue(price);
+    }
+    private void updateGasLiters(double liters)
+    {
+        /*
+            Turn liters into a char array (digits)
+        
+            Ex: liters = 203.67
+                -> digits = ['2', '0', '3', '6', '7']
+        */
+        liters = Math.floor(liters * 100) / 100;
+        setLitersValue(liters);
+    }
+    
+    // Start application
+    public static void main(String[] args) {
+        new FrameSunoco(null);
+    }
+}
+
+
+        /*
         StringBuilder sb = new StringBuilder(String.format("%.2f", price));
         char[] digits = sb.deleteCharAt(sb.length() - 3).toString().toCharArray();
         
@@ -354,17 +425,12 @@ public class FrameSunoco extends JFrame {
                     }
                 }
             }
-        }
-    }
-    private void updateGasLiters(double liters)
-    {
-        /*
-            Turn liters into a char array (digits)
+        }*/
+
+
+
         
-            Ex: liters = 203.67
-                -> digits = ['2', '0', '3', '6', '7']
-        */
-        liters = Math.floor(liters * 100) / 100;
+        /*
         StringBuilder sb = new StringBuilder(String.format("%.2f", liters));
         char[] digits = sb.deleteCharAt(sb.length() - 3).toString().toCharArray();
         
@@ -392,11 +458,4 @@ public class FrameSunoco extends JFrame {
                     }
                 }
             }
-        }
-    }
-    
-    // Start application
-    public static void main(String[] args) {
-        new FrameSunoco(null);
-    }
-}
+        }*/
