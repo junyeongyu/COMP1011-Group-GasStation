@@ -191,25 +191,31 @@ public class FrameSunoco extends JFrame {
             isPumping = !isPumping;
             buttonStart.setText(!isPumping ? "Start" : "Stop");
             
-            new Thread(new Runnable() {
-                @Override
-                public void run()
-                {
-                    long now = System.currentTimeMillis();
-                    long then = now;
-                    
-                    while(isPumping)
+            if(isPumping)
+            {
+                // Create a new thread for pumping gas
+                new Thread(new Runnable() {
+                    @Override
+                    public void run()
                     {
-                        now = System.currentTimeMillis();
-                        if(now - then > 500)
+                        // time trackers for sleep implementation
+                        long now = System.currentTimeMillis();
+                        long then = now;
+
+                        while(isPumping)
                         {
-                            then = now;
-                            
-                            System.out.println("GLUB");
+                            now = System.currentTimeMillis();
+                            if(now - then > 500) // sleep for 500 milliseconds
+                            {
+                                then = now;
+
+                                // update gas amounts here
+                                System.out.println("GLUB");
+                            }
                         }
                     }
-                }
-            }).start();
+                }).start();
+            }
         });
         // Button for exiting application
         buttonExit.addActionListener((e) -> {
