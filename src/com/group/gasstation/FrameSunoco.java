@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * This class provides GUI for user to pump the gas.
@@ -50,6 +52,9 @@ public class FrameSunoco extends JFrame {
     private final int FRAME_WIDTH = 620;
     private final int FRAME_HEIGHT = 670;
     private final int FRAME_HEIGHT_SOUTH = 240;
+    
+    // Preset Amount
+    private int presetAmount = 0;
     
     // Default Constructor
     //public FrameSunoco() {}
@@ -171,6 +176,11 @@ public class FrameSunoco extends JFrame {
         sliderPreset.setPaintTicks(true);
         sliderPreset.setPaintLabels(true);
         sliderPreset.setPreferredSize(new Dimension(FRAME_WIDTH, 66));
+        sliderPreset.addChangeListener((e)-> {
+            // Update labelPreset when sliderPreset is changed
+            presetAmount = sliderPreset.getValue();
+            labelPreset.setText("Preset Purchase Amount" + (presetAmount == 0? "" : " $" + presetAmount));
+        });
         // Button for exiting application
         buttonExit.addActionListener((e) -> {
             if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit System?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
