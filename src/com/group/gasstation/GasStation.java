@@ -4,7 +4,6 @@ import com.group.gasstation.db.DBManager;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +19,9 @@ import javax.swing.JTextField;
 public class GasStation extends JFrame {
     protected DBManager db;
     protected JFrame frameSunoco;
-    private JPanel panelNorth, panelCentre,
-                   panelFirstTab, panelSecondTab;
+    private JPanel panelNorth, panelCentre;
+    private PanelFirstTab panelFirstTab;
+    private PanelSecondTab panelSecondTab;
     private JTabbedPane tabTabPane;
     private JLabel labelId, labelPassword;
     private JTextField textFieldId;
@@ -66,7 +66,12 @@ public class GasStation extends JFrame {
                 JOptionPane.showMessageDialog(null, "Your ID or password is wrong");
                 return;
             }
-            id = (Integer) result.get("id");;
+            
+            // Wipe Text Fields if login is successful
+            textFieldId.setText("");
+            passwordFieldPassword.setText("");
+            
+            id = (Integer) result.get("id");
             
             // 2) Save employee information
             result = db.getObject(String.format("SELECT manager from employee where id = %d", id));
@@ -80,6 +85,10 @@ public class GasStation extends JFrame {
             
             // 4) Show pump
             buttonPump.setVisible(true);
+            
+            // 5) Show buttons for managers
+            panelFirstTab.load(manager);
+            panelSecondTab.load(manager);
             
             JOptionPane.showMessageDialog(null, "Login is successful.");
         });

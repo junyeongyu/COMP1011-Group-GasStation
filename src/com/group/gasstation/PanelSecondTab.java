@@ -6,18 +6,17 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 public class PanelSecondTab extends JPanel {
-    private GasStation station;
+    private final GasStation station;
     
-    private JPanel pnlContainer, pnlAmount, pnlButton;
-    private JLabel lblType, lblPrice;
-    private JButton btnUpdate, btnReset;
+    private final JPanel pnlContainer, pnlAmount, pnlButton;
+    private final JLabel lblType, lblPrice;
+    private final JButton btnUpdate, btnReset;
         
-    private List<JLabel> labelGasTypeList;
-    private List<JTextField> textFieldGasCurrentList;
+    private final List<JLabel> labelGasTypeList;
+    private final List<JTextField> textFieldGasCurrentList;
     
     //public PanelFirstTab() {}
     public PanelSecondTab(GasStation gasStation) {
@@ -64,5 +63,16 @@ public class PanelSecondTab extends JPanel {
         /// 4. Set components into current class
         add(pnlContainer);
         setSize(800, 800);
+    }
+    
+    public void load(boolean manager)
+    {
+        btnUpdate.setVisible(manager);
+        btnReset.setVisible(manager);
+        
+        for(JTextField textField : textFieldGasCurrentList)
+        {
+            textField.setEditable(manager);
+        }
     }
 }

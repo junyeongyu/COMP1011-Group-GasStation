@@ -2,25 +2,22 @@ package com.group.gasstation;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 public class PanelFirstTab extends JPanel {
-    private GasStation station;
+    private final GasStation station;
     
-    private JPanel pnlContainer, pnlPrice, pnlButton;
-    private JLabel lblType, lblPrice;
+    private final JPanel pnlContainer, pnlPrice, pnlButton;
+    private final JLabel lblType, lblPrice;
     private JTextField txtRPrice, txtPPrice, txtSPrice;
-    private JButton btnUpdate;
+    private final JButton btnUpdate;
     
-    private List<JLabel> labelGasTypeList;
-    private List<JTextField> textFieldGasCurrentList;
+    private final List<JLabel> labelGasTypeList;
+    private final List<JTextField> textFieldGasCurrentList;
     
     //public PanelFirstTab() {}
     public PanelFirstTab(GasStation gasStation) {
@@ -63,5 +60,15 @@ public class PanelFirstTab extends JPanel {
         add(pnlContainer);
         setSize(800, 800);
         setVisible(true);
+    }
+    
+    public void load(boolean manager)
+    {
+        btnUpdate.setVisible(manager);
+        
+        for(JTextField textField : textFieldGasCurrentList)
+        {
+            textField.setEditable(manager);
+        }
     }
 }
