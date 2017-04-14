@@ -23,6 +23,7 @@ public class GasStation extends JFrame {
     private JButton buttonLogin;
     
     protected int id;
+    protected boolean manager;
     
     public GasStation() {
         super("Tabs");
@@ -41,6 +42,7 @@ public class GasStation extends JFrame {
         /// 2. Set properties including eventhandlers
         frameSunoco.setVisible(false);
         buttonLogin.addActionListener((e) -> {
+            // Check login is successful
             Map<String, Object> result = db.getObject(String.format("SELECT id, password FROM user WHERE id = %s AND password= '%s'", 
                     textFieldId.getText(), textFieldPassword.getText()));
             if (result == null) {
@@ -49,6 +51,12 @@ public class GasStation extends JFrame {
             }
             id = (Integer) result.get("id");;
             JOptionPane.showMessageDialog(null, "Login is successful.");
+            
+            // Save employee information
+            result = db.getObject(String.format("SELECT manager from employee where id = %d", id));
+            System.out.println(result.get("manager"));
+            manager = ((int) result.get("manager")) == 1;
+            System.out.println(manager);
             
         });
         // Tabs
