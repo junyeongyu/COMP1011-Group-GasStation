@@ -3,6 +3,8 @@ package com.group.gasstation;
 import com.group.gasstation.db.DBManager;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -62,7 +64,6 @@ public class GasStation extends JFrame {
                 return;
             }
             id = (Integer) result.get("id");;
-            JOptionPane.showMessageDialog(null, "Login is successful.");
             
             // 2) Save employee information
             result = db.getObject(String.format("SELECT manager from employee where id = %d", id));
@@ -73,6 +74,8 @@ public class GasStation extends JFrame {
             tabTabPane.setVisible(true);
             tabTabPane.addTab("First Tab", null, createFirstTab(), "My First Tab"); // chnage the location due to life cycle issue
             tabTabPane.addTab("Second Tab", null, createSecondTab(), "My Second Tab"); // chnage the location due to life cycle issue
+       
+            JOptionPane.showMessageDialog(null, "Login is successful.");
         });
         // Tabs
         tabTabPane.setVisible(false);
@@ -107,5 +110,21 @@ public class GasStation extends JFrame {
     }
     protected void openPopup() { // called from child component
         frameSunoco.setVisible(true);
+    }
+    protected List<JLabel> getLabelGasTypeList() {
+        List<JLabel> labelGasTypeList = new ArrayList<>();
+        List<Map<String, Object>> gasTypeList = db.getList("SELECT id, gas_name FROM gas_type");
+        for (Map<String, Object> gasType: gasTypeList) {
+            labelGasTypeList.add(new JLabel((String) gasType.get("gas_name")));
+        }
+        return labelGasTypeList;
+    }
+    protected List<JTextField> gettextFieldGasCurrentList() {
+        List<JTextField> labelGasCurrentList = new ArrayList<>();
+        List<Map<String, Object>> gasTypeList = db.getList("SELECT id, amount, price FROM gas_current");
+        for (Map<String, Object> gasType: gasTypeList) {
+            labelGasCurrentList.add(new JTextField(String.valueOf(gasType.get("price"))));
+        }
+        return labelGasCurrentList;
     }
 }

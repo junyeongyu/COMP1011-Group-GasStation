@@ -2,6 +2,7 @@ package com.group.gasstation;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,9 +13,11 @@ public class PanelSecondTab extends JPanel {
     private GasStation main;
     
     private JPanel pnlContainer, pnlAmount, pnlButton;
-    private JLabel lblRegular, lblPlus, lblSupreme, lblType, lblPrice;
-    private JTextField txtRAmount, txtPAmount, txtSAmount;
+    private JLabel lblType, lblPrice;
     private JButton btnUpdate, btnReset;
+        
+    private List<JLabel> labelGasTypeList;
+    private List<JTextField> textFieldGasCurrentList;
     
     //public PanelFirstTab() {}
     public PanelSecondTab(GasStation mainGasStation) {
@@ -28,36 +31,31 @@ public class PanelSecondTab extends JPanel {
         pnlButton = new JPanel();
         pnlButton.setLayout(new BorderLayout());
         
-        lblRegular = new JLabel("Regular");
-        lblPlus = new JLabel("Plus");
-        lblSupreme = new JLabel("Supreme");
+        labelGasTypeList = main.getLabelGasTypeList();
         lblType = new JLabel("Gas Type");
         lblPrice = new JLabel("Amount");
-        
-        txtRAmount = new JTextField(10);
-        txtPAmount = new JTextField(10);
-        txtSAmount = new JTextField(10);
+        textFieldGasCurrentList = main.gettextFieldGasCurrentList();
         
         btnUpdate = new JButton("Update");
-        btnUpdate.setVisible(false);
+        btnUpdate.setVisible(main.manager);
         
         btnReset = new JButton("Reset");
-        btnReset.setVisible(false);
+        btnReset.setVisible(main.manager);
         
         /// 2. Set properties including eventhandlers
         
         
         /// 3. Decide relationship between components
         pnlAmount.add(lblType);
-        pnlAmount.add(lblRegular);
-        pnlAmount.add(lblPlus);
-        pnlAmount.add(lblSupreme);
+        for (JLabel labelGasType : labelGasTypeList) {
+            pnlAmount.add(labelGasType);
+        }
         pnlAmount.add(lblPrice);
-        pnlAmount.add(txtRAmount);
-        pnlAmount.add(txtPAmount);
-        pnlAmount.add(txtSAmount);
+        for (JTextField textFieldGasCurrent : textFieldGasCurrentList) {
+            pnlAmount.add(textFieldGasCurrent);
+        }
         
-        pnlButton.add(btnUpdate, BorderLayout.WEST);
+        pnlButton.add(btnUpdate, BorderLayout.EAST);
         pnlButton.add(btnReset, BorderLayout.WEST);
         
         pnlContainer.add(pnlAmount, BorderLayout.CENTER);

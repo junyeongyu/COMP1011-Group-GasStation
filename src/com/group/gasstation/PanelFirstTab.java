@@ -33,13 +33,12 @@ public class PanelFirstTab extends JPanel {
         pnlPrice.setLayout(new GridLayout(2,4));
         pnlButton = new JPanel();
         
-        labelGasTypeList = getLabelGasTypeList();
+        labelGasTypeList = main.getLabelGasTypeList();
         lblType = new JLabel("Gas Type");
         lblPrice = new JLabel("Price");
-        textFieldGasCurrentList = gettextFieldGasCurrentList();
+        textFieldGasCurrentList = main.gettextFieldGasCurrentList();
         
         btnUpdate = new JButton("Update");
-        System.out.println(main.manager);
         btnUpdate.setVisible(main.manager);
         
         
@@ -64,23 +63,5 @@ public class PanelFirstTab extends JPanel {
         add(pnlContainer);
         setSize(800, 800);
         setVisible(true);
-    }
-
-    private List<JLabel> getLabelGasTypeList() {
-        List<JLabel> labelGasTypeList = new ArrayList<>();
-        List<Map<String, Object>> gasTypeList = main.db.getList("SELECT id, gas_name FROM gas_type");
-        for (Map<String, Object> gasType: gasTypeList) {
-            labelGasTypeList.add(new JLabel((String) gasType.get("gas_name")));
-        }
-        return labelGasTypeList;
-    }
-
-    private List<JTextField> gettextFieldGasCurrentList() {
-        List<JTextField> labelGasCurrentList = new ArrayList<>();
-        List<Map<String, Object>> gasTypeList = main.db.getList("SELECT id, amount, price FROM gas_current");
-        for (Map<String, Object> gasType: gasTypeList) {
-            labelGasCurrentList.add(new JTextField(String.valueOf(gasType.get("price"))));
-        }
-        return labelGasCurrentList;
     }
 }
