@@ -38,15 +38,13 @@ public class DBManager {
             rs = stmt.executeQuery(query);
 
             ResultSetMetaData rsMetaData = rs.getMetaData();
-
             int numOfCols = rsMetaData.getColumnCount();
-
             //System.out.println("Result:");
             
-            Map map = new HashMap();
             // while loop to iterate the resultset
             while (rs.next()) {
-                for (int i = 1; i < numOfCols; i++) {
+                Map map = new HashMap();
+                for (int i = 1; i <= numOfCols; i++) {
                     String columnName = rsMetaData.getColumnName(i);
                     Object value = rs.getObject(i);
                     System.out.println(columnName + ": " + value);
