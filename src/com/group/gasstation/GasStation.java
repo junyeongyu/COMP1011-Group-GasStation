@@ -119,11 +119,11 @@ public class GasStation extends JFrame {
         }
         return labelGasTypeList;
     }
-    protected List<JTextField> gettextFieldGasCurrentList() {
+    protected List<JTextField> gettextFieldGasCurrentList(String field) {
         List<JTextField> labelGasCurrentList = new ArrayList<>();
         List<Map<String, Object>> gasTypeList = db.getList("SELECT id, amount, price FROM gas_current");
         for (Map<String, Object> gasType: gasTypeList) {
-            labelGasCurrentList.add(new JTextField(String.valueOf(gasType.get("price"))));
+            labelGasCurrentList.add(new JTextField(String.valueOf(gasType.get(field))));
         }
         return labelGasCurrentList;
     }

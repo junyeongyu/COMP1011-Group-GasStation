@@ -36,7 +36,7 @@ public class PanelFirstTab extends JPanel {
         labelGasTypeList = main.getLabelGasTypeList();
         lblType = new JLabel("Gas Type");
         lblPrice = new JLabel("Price");
-        textFieldGasCurrentList = main.gettextFieldGasCurrentList();
+        textFieldGasCurrentList = main.gettextFieldGasCurrentList("price");
         
         btnUpdate = new JButton("Update");
         btnUpdate.setVisible(main.manager);
