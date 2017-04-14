@@ -244,7 +244,7 @@ public class FrameSunoco extends JFrame {
             }
             else
             {
-                //buttonStart.setEnabled(false);
+                buttonStart.setEnabled(false);
             }
         });
         // Button for exiting application
