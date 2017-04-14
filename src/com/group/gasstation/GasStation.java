@@ -4,6 +4,8 @@ import com.group.gasstation.db.DBManager;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
@@ -24,7 +26,7 @@ public class GasStation extends JFrame {
     private JLabel labelId, labelPassword;
     private JTextField textFieldId;
     private JPasswordField passwordFieldPassword;
-    private JButton buttonLogin;
+    private JButton buttonLogin, buttonPump;
     
     protected int id;
     protected boolean manager;
@@ -33,7 +35,7 @@ public class GasStation extends JFrame {
         super("Tabs");
         
         /// 1. Intialize all components
-        frameSunoco = new FrameSunoco(this);
+        //frameSunoco = new FrameSunoco(this);
         tabTabPane = new JTabbedPane();
         panelNorth = new JPanel();
         panelCentre = new JPanel();
@@ -42,9 +44,10 @@ public class GasStation extends JFrame {
         textFieldId = new JTextField(10);
         passwordFieldPassword = new JPasswordField(10);
         buttonLogin = new JButton("Login");
+        buttonPump = new JButton("Pump");
         
         /// 2. Set properties including eventhandlers
-        frameSunoco.setVisible(false);
+        //frameSunoco.setVisible(false);
         buttonLogin.addActionListener((e) -> {
             
             // 0) Validation of form
@@ -74,14 +77,21 @@ public class GasStation extends JFrame {
             tabTabPane.setVisible(true);
             tabTabPane.addTab("First Tab", null, createFirstTab(), "My First Tab"); // chnage the location due to life cycle issue
             tabTabPane.addTab("Second Tab", null, createSecondTab(), "My Second Tab"); // chnage the location due to life cycle issue
-       
+            
+            // 4) Show pump
+            buttonPump.setVisible(true);
+            
             JOptionPane.showMessageDialog(null, "Login is successful.");
+        });
+        buttonPump.setVisible(false);
+        buttonPump.addActionListener((e)->{
+            openPopup();
         });
         // Tabs
         tabTabPane.setVisible(false);
         
         // TODO: Test (it will be move into neccessary functions)
-        openPopup();
+        //openPopup();
         
         /// 3. Decide relationship between components
         panelNorth.setLayout(new GridLayout(3, 2));
@@ -89,7 +99,7 @@ public class GasStation extends JFrame {
         panelNorth.add(textFieldId);
         panelNorth.add(labelPassword);
         panelNorth.add(passwordFieldPassword);
-        panelNorth.add(new JPanel());
+        panelNorth.add(buttonPump);
         panelNorth.add(buttonLogin);
         
         /// 4. Set components into current class
@@ -109,22 +119,40 @@ public class GasStation extends JFrame {
         return panelSecondTab;
     }
     protected void openPopup() { // called from child component
-        frameSunoco.setVisible(true);
+        //frameSunoco.setVisible(true);
+        frameSunoco = new FrameSunoco(this); // Initialize instance this moment due to life cycle issue
     }
     protected List<JLabel> getLabelGasTypeList() {
         List<JLabel> labelGasTypeList = new ArrayList<>();
-        List<Map<String, Object>> gasTypeList = db.getList("SELECT id, gas_name FROM gas_type");
+        List<Map<String, Object>> gasTypeList = db.getList("SELECT id, gas_name FROM gas_type ORDER BY id ASC");
         for (Map<String, Object> gasType: gasTypeList) {
             labelGasTypeList.add(new JLabel((String) gasType.get("gas_name")));
         }
         return labelGasTypeList;
     }
-    protected List<JTextField> gettextFieldGasCurrentList(String field) {
+    protected List<JTextField> getTextFieldGasCurrentList(String field) {
         List<JTextField> labelGasCurrentList = new ArrayList<>();
-        List<Map<String, Object>> gasTypeList = db.getList("SELECT id, amount, price FROM gas_current");
+        List<Map<String, Object>> gasTypeList = db.getList("SELECT id, amount, price FROM gas_current ORDER BY id ASC");
         for (Map<String, Object> gasType: gasTypeList) {
             labelGasCurrentList.add(new JTextField(String.valueOf(gasType.get(field))));
         }
         return labelGasCurrentList;
+    }
+    protected Map<Integer,JButton> getButtonGasTypeMap() {
+        Map<Integer,JButton> map = new LinkedHashMap<>();
+        List<Map<String, Object>> gasTypeList = db.getList("SELECT id, gas_name FROM gas_type ORDER BY id ASC");
+        for (Map<String, Object> gasType: gasTypeList) {
+            map.put((Integer) gasType.get("id"), new JButton((String)gasType.get("gas_name")));
+        }
+        return map;
+    }
+
+    Map<Integer, JTextField> getTextFieldGasCurrentMap(String field) {
+        Map<Integer,JTextField> map = new LinkedHashMap<>();
+        List<Map<String, Object>> gasCurrentList = db.getList("SELECT id, amount, price FROM gas_current ORDER BY id ASC");
+        for (Map<String, Object> gasType: gasCurrentList) {
+            map.put((Integer) gasType.get("id"), new JTextField(String.format("%.2f", gasType.get(field))));
+        }
+        return map;
     }
 }
