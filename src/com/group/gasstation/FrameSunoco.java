@@ -313,7 +313,95 @@ public class FrameSunoco extends JFrame {
         setVisible(true); // show the window
     }
     
-    private String[] getValues (double value) {
+    
+    
+    // Update required JLabels
+    private void updateGasPrice(double price)
+    {
+        /*
+            Turn price into a char array (digits)
+        
+            Ex: price = 203.67
+                -> digits = ['2', '0', '3', '6', '7']
+        */
+        price = Math.floor(price * 100) / 100;
+        StringBuilder sb = new StringBuilder(String.format("%.2f", price));
+        char[] digits = sb.deleteCharAt(sb.length() - 3).toString().toCharArray();
+        
+        // only updates JLabels needing updating
+        if(price >= 0.01)
+        {
+            labelSaleE.setText(String.valueOf(digits[digits.length - 1]));
+            
+            if(price >= 0.1)
+            {
+                labelSaleD.setText(String.valueOf(digits[digits.length - 2]));
+                
+                if(price >= 1)
+                {
+                    labelSaleC.setText(String.valueOf(digits[digits.length - 3]));
+                    
+                    if(price >= 10)
+                    {
+                        labelSaleB.setText(String.valueOf(digits[digits.length - 4]));
+                        
+                        if(price >= 100)
+                        {
+                            labelSaleA.setText(String.valueOf(digits[digits.length - 5]));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void updateGasLiters(double liters)
+    {
+        /*
+            Turn liters into a char array (digits)
+        
+            Ex: liters = 203.67
+                -> digits = ['2', '0', '3', '6', '7']
+        */
+        liters = Math.floor(liters * 100) / 100;
+        StringBuilder sb = new StringBuilder(String.format("%.2f", liters));
+        char[] digits = sb.deleteCharAt(sb.length() - 3).toString().toCharArray();
+        
+        // only updates JLabels needing updating
+        if(liters >= 0.01)
+        {
+            labelLiterE.setText(String.valueOf(digits[digits.length - 1]));
+            
+            if(liters >= 0.1)
+            {
+                labelLiterD.setText(String.valueOf(digits[digits.length - 2]));
+                
+                if(liters >= 1)
+                {
+                    labelLiterC.setText(String.valueOf(digits[digits.length - 3]));
+                    
+                    if(liters >= 10)
+                    {
+                        labelLiterB.setText(String.valueOf(digits[digits.length - 4]));
+                        
+                        if(liters >= 100)
+                        {
+                            labelLiterA.setText(String.valueOf(digits[digits.length - 5]));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Start application
+    public static void main(String[] args) {
+        new FrameSunoco(null);
+    }
+}
+
+
+        /*
+private String[] getValues (double value) {
         String text = String.valueOf(value);
         String beforeDot = text.split("\\.")[0];
         String afterDot = text.split("\\.")[1];
@@ -361,97 +449,4 @@ public class FrameSunoco extends JFrame {
     private void setLitersValue(double value) {
         setSalesValue(getValues(value));
     }
-    
-    // Update required JLabels
-    private void updateGasPrice(double price)
-    {
-        /*
-            Turn price into a char array (digits)
-        
-            Ex: price = 203.67
-                -> digits = ['2', '0', '3', '6', '7']
         */
-        price = Math.floor(price * 100) / 100;
-        setSalesValue(price);
-    }
-    private void updateGasLiters(double liters)
-    {
-        /*
-            Turn liters into a char array (digits)
-        
-            Ex: liters = 203.67
-                -> digits = ['2', '0', '3', '6', '7']
-        */
-        liters = Math.floor(liters * 100) / 100;
-        setLitersValue(liters);
-    }
-    
-    // Start application
-    public static void main(String[] args) {
-        new FrameSunoco(null);
-    }
-}
-
-
-        /*
-        StringBuilder sb = new StringBuilder(String.format("%.2f", price));
-        char[] digits = sb.deleteCharAt(sb.length() - 3).toString().toCharArray();
-        
-        // only updates JLabels needing updating
-        if(price >= 0.01)
-        {
-            labelSaleE.setText(String.valueOf(digits[digits.length - 1]));
-            
-            if(price >= 0.1)
-            {
-                labelSaleD.setText(String.valueOf(digits[digits.length - 2]));
-                
-                if(price >= 1)
-                {
-                    labelSaleC.setText(String.valueOf(digits[digits.length - 3]));
-                    
-                    if(price >= 10)
-                    {
-                        labelSaleB.setText(String.valueOf(digits[digits.length - 4]));
-                        
-                        if(price >= 100)
-                        {
-                            labelSaleA.setText(String.valueOf(digits[digits.length - 5]));
-                        }
-                    }
-                }
-            }
-        }*/
-
-
-
-        
-        /*
-        StringBuilder sb = new StringBuilder(String.format("%.2f", liters));
-        char[] digits = sb.deleteCharAt(sb.length() - 3).toString().toCharArray();
-        
-        // only updates JLabels needing updating
-        if(liters >= 0.01)
-        {
-            labelLiterE.setText(String.valueOf(digits[digits.length - 1]));
-            
-            if(liters >= 0.1)
-            {
-                labelLiterD.setText(String.valueOf(digits[digits.length - 2]));
-                
-                if(liters >= 1)
-                {
-                    labelLiterC.setText(String.valueOf(digits[digits.length - 3]));
-                    
-                    if(liters >= 10)
-                    {
-                        labelLiterB.setText(String.valueOf(digits[digits.length - 4]));
-                        
-                        if(liters >= 100)
-                        {
-                            labelLiterA.setText(String.valueOf(digits[digits.length - 5]));
-                        }
-                    }
-                }
-            }
-        }*/
