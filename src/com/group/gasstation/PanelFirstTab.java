@@ -2,6 +2,9 @@ package com.group.gasstation;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,9 +15,12 @@ public class PanelFirstTab extends JPanel {
     private GasStation main;
     
     private JPanel pnlContainer, pnlPrice, pnlButton;
-    private JLabel lblRegular, lblPlus, lblSupreme, lblType, lblPrice;
+    private JLabel lblType, lblPrice;
     private JTextField txtRPrice, txtPPrice, txtSPrice;
     private JButton btnUpdate;
+    
+    private List<JLabel> labelGasTypeList;
+    private List<JTextField> textFieldGasCurrentList;
     
     //public PanelFirstTab() {}
     public PanelFirstTab(GasStation mainGasStation) {
@@ -27,39 +33,54 @@ public class PanelFirstTab extends JPanel {
         pnlPrice.setLayout(new GridLayout(2,4));
         pnlButton = new JPanel();
         
-        lblRegular = new JLabel("Regular");
-        lblPlus = new JLabel("Plus");
-        lblSupreme = new JLabel("Supreme");
+        labelGasTypeList = getLabelGasTypeList();
         lblType = new JLabel("Gas Type");
         lblPrice = new JLabel("Price");
-        
-        txtRPrice = new JTextField(10);
-        txtPPrice = new JTextField(10);
-        txtSPrice = new JTextField(10);
+        textFieldGasCurrentList = gettextFieldGasCurrentList();
         
         btnUpdate = new JButton("Update");
-        btnUpdate.setVisible(false);
+        System.out.println(main.manager);
+        btnUpdate.setVisible(main.manager);
+        
+        
         /// 2. Set properties including eventhandlers
         
         
         /// 3. Decide relationship between components
         pnlPrice.add(lblType);
-        pnlPrice.add(lblRegular);
-        pnlPrice.add(lblPlus);
-        pnlPrice.add(lblSupreme);
+        for (JLabel labelGasType : labelGasTypeList) {
+            pnlPrice.add(labelGasType);
+        }
         pnlPrice.add(lblPrice);
-        pnlPrice.add(txtRPrice);
-        pnlPrice.add(txtPPrice);
-        pnlPrice.add(txtSPrice);
-        
+        for (JTextField textFieldGasCurrent : textFieldGasCurrentList) {
+            pnlPrice.add(textFieldGasCurrent);
+        }
         pnlButton.add(btnUpdate);
-        
         pnlContainer.add(pnlPrice, BorderLayout.CENTER);
         pnlContainer.add(pnlButton, BorderLayout.SOUTH);
+        
         
         /// 4. Set components into current class
         add(pnlContainer);
         setSize(800, 800);
         setVisible(true);
+    }
+
+    private List<JLabel> getLabelGasTypeList() {
+        List<JLabel> labelGasTypeList = new ArrayList<>();
+        List<Map<String, Object>> gasTypeList = main.db.getList("SELECT id, gas_name FROM gas_type");
+        for (Map<String, Object> gasType: gasTypeList) {
+            labelGasTypeList.add(new JLabel((String) gasType.get("gas_name")));
+        }
+        return labelGasTypeList;
+    }
+
+    private List<JTextField> gettextFieldGasCurrentList() {
+        List<JTextField> labelGasCurrentList = new ArrayList<>();
+        List<Map<String, Object>> gasTypeList = main.db.getList("SELECT id, amount, price FROM gas_current");
+        for (Map<String, Object> gasType: gasTypeList) {
+            labelGasCurrentList.add(new JTextField(String.valueOf(gasType.get("price"))));
+        }
+        return labelGasCurrentList;
     }
 }

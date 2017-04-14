@@ -7,14 +7,15 @@ import java.util.Map;
 public class Main {   
     public static void main(String[] args) {
         DBManager dbManager = new DBManager();
-
+        GasStation gasStation = new GasStation();
+        gasStation.db = dbManager;
+        
+        /*
         // test query
         final String query = "SELECT * FROM employee";
         List<Map<String, Object>> list = dbManager.getList(query);
-        System.out.println(list);
+        System.out.println(list);*/
         
-        GasStation gasStation = new GasStation();
-        gasStation.db = dbManager;
         
 
     }

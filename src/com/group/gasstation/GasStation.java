@@ -69,12 +69,13 @@ public class GasStation extends JFrame {
             manager = ((int) result.get("manager")) == 1;
             
             // 3) Show tab menu if login is successful
+            tabTabPane.removeAll(); // in case, user login more than one times
             tabTabPane.setVisible(true);
+            tabTabPane.addTab("First Tab", null, createFirstTab(), "My First Tab"); // chnage the location due to life cycle issue
+            tabTabPane.addTab("Second Tab", null, createSecondTab(), "My Second Tab"); // chnage the location due to life cycle issue
         });
         // Tabs
         tabTabPane.setVisible(false);
-        tabTabPane.addTab("First Tab", null, createFirstTab(), "My First Tab");
-        tabTabPane.addTab("Second Tab", null, createSecondTab(), "My Second Tab");
         
         // TODO: Test (it will be move into neccessary functions)
         openPopup();
