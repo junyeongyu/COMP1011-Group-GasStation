@@ -12,7 +12,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 public class PanelFirstTab extends JPanel {
-    private GasStation main;
+    private GasStation station;
     
     private JPanel pnlContainer, pnlPrice, pnlButton;
     private JLabel lblType, lblPrice;
@@ -23,8 +23,8 @@ public class PanelFirstTab extends JPanel {
     private List<JTextField> textFieldGasCurrentList;
     
     //public PanelFirstTab() {}
-    public PanelFirstTab(GasStation mainGasStation) {
-        main = mainGasStation;
+    public PanelFirstTab(GasStation gasStation) {
+        station = gasStation;
         
         /// 1. Intialize all componentss
         pnlContainer = new JPanel();
@@ -33,13 +33,13 @@ public class PanelFirstTab extends JPanel {
         pnlPrice.setLayout(new GridLayout(2,4));
         pnlButton = new JPanel();
         
-        labelGasTypeList = main.getLabelGasTypeList();
+        labelGasTypeList = station.getLabelGasTypeList();
         lblType = new JLabel("Gas Type");
         lblPrice = new JLabel("Price");
-        textFieldGasCurrentList = main.getTextFieldGasCurrentList("price");
+        textFieldGasCurrentList = station.getTextFieldGasCurrentList("price");
         
         btnUpdate = new JButton("Update");
-        btnUpdate.setVisible(main.manager);
+        btnUpdate.setVisible(station.manager);
         
         
         /// 2. Set properties including eventhandlers

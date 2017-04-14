@@ -343,6 +343,7 @@ public class FrameSunoco extends JFrame {
         add(panelEast, BorderLayout.EAST);
         add(panelSouth, BorderLayout.SOUTH);
         setLocationRelativeTo(null); //Center the window
+        //pack();
         setVisible(true); // show the window
     }
     
