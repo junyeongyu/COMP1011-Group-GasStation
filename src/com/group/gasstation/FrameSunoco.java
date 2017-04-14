@@ -39,7 +39,7 @@ public class FrameSunoco extends JFrame {
     private final Map<Integer, JTextField> textFieldGasCurrentMap;
     
     // Buttons
-    private final JButton buttonStart, buttonExit;
+    private final JButton buttonStart, buttonCompleteSales;
     private final Map<Integer, JButton> buttonGasTypeMap;
     
     // Sliders
@@ -69,6 +69,9 @@ public class FrameSunoco extends JFrame {
     
     // true while pumping
     private boolean isPumping = false;
+    
+    // Gas id - selected by user
+    private int gasId;
     
     // Default Constructor
     //public FrameSunoco() {}
@@ -113,7 +116,7 @@ public class FrameSunoco extends JFrame {
         // Buttons
         buttonGasTypeMap = station.getButtonGasTypeMap();
         buttonStart = new JButton("Start");
-        buttonExit = new JButton("Exit");
+        buttonCompleteSales = new JButton("Complete Sales");
         // Slider
         sliderPreset = new JSlider(0, 200);
         // Borders
@@ -206,6 +209,7 @@ public class FrameSunoco extends JFrame {
                 if (source == buttonGasTypeValue) {
                     String priceString = textFieldGasCurrentMap.get(buttonGasTypeKey).getText();
                     ppl = Double.valueOf(priceString) / 100;
+                    gasId = buttonGasTypeKey; // setting current gas id
                 }
             }
             
@@ -257,11 +261,28 @@ public class FrameSunoco extends JFrame {
                 buttonStart.setEnabled(false);
             }
         });
-        // Button for exiting application
-        buttonExit.addActionListener((e) -> {
-            if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit System?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                System.exit(0);
+        // Button for complete sales: 
+        buttonCompleteSales.addActionListener((e) -> {
+            // COMPLETE SALE should finish the transaction and update the Global tank as well as write it to the database.
+            Map<String, Object> result = station.db.getObject("SELECT MAX(id) AS id FROM gas_log"); // to insert new id
+            int id;
+            if (result == null) {
+                id = 301; // default - starting id
+            } else {
+                id = ((int) result.get("id")) + 1;
             }
+            
+            String sql = "INSERT INTO gas_log (id, gas_id, price, liter, total_price) VALUES (%d, %d, %s, %s, %s)";
+            int resultValue = station.db.execute(String.format(sql, id, gasId, labelPriceValue.getText(), String.valueOf(gasLiters), String.valueOf(gasPrice)));
+            if (resultValue > 0) {
+                JOptionPane.showMessageDialog(null, "Thank you for your purchage.");
+            } else {
+                JOptionPane.showMessageDialog(null, "There is temporary transction error.\nPlease try again.");
+            }
+            
+            /*if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit System?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }*/
         });
         
         /// 3. Decide relationship between components
@@ -310,7 +331,7 @@ public class FrameSunoco extends JFrame {
         panelSouthSecond.add(sliderPreset, BorderLayout.CENTER);
         panelSouthSecond.add(panelSouthSecondSouth, BorderLayout.SOUTH);
         panelSouthSecondSouth.add(buttonStart);
-        panelSouthSecondSouth.add(buttonExit);
+        panelSouthSecondSouth.add(buttonCompleteSales);
         
         /// 4. Set components into current class
         setLayout(new BorderLayout());

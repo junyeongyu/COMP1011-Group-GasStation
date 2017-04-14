@@ -68,10 +68,12 @@ public class DBManager {
         return list;
     }
     public int execute(String query) {
+        int result = -1; // error
         try {
             preprocess();
             stmt = conn.createStatement();
             stmt.executeUpdate(query); // UPDATE EMPLOYEE colum='aaa' where id = 'id'
+            result = 1; // sucess
         } catch (SQLException error) {
             error.printStackTrace();
         } catch (Exception error) {
@@ -84,7 +86,7 @@ public class DBManager {
                 Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return 0;
+        return result;  
     }
 
     private void preprocess () {
