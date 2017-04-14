@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
@@ -19,7 +20,8 @@ public class GasStation extends JFrame {
                    panelFirstTab, panelSecondTab;
     private JTabbedPane tabTabPane;
     private JLabel labelId, labelPassword;
-    private JTextField textFieldId, textFieldPassword;
+    private JTextField textFieldId;
+    private JPasswordField passwordFieldPassword;
     private JButton buttonLogin;
     
     protected int id;
@@ -36,15 +38,25 @@ public class GasStation extends JFrame {
         labelId = new JLabel("ID");
         labelPassword = new JLabel("Password");
         textFieldId = new JTextField(10);
-        textFieldPassword = new JTextField(10);
+        passwordFieldPassword = new JPasswordField(10);
         buttonLogin = new JButton("Login");
         
         /// 2. Set properties including eventhandlers
         frameSunoco.setVisible(false);
         buttonLogin.addActionListener((e) -> {
-            // Check login is successful
+            
+            // 0) Validation of form
+            if (textFieldId.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please input ID");
+                return;
+            } else if (passwordFieldPassword.getPassword().length == 0) {
+                JOptionPane.showMessageDialog(null, "Please input Password");
+                return;
+            }
+            
+            // 1) Check login is successful
             Map<String, Object> result = db.getObject(String.format("SELECT id, password FROM user WHERE id = %s AND password= '%s'", 
-                    textFieldId.getText(), textFieldPassword.getText()));
+                    textFieldId.getText(), String.valueOf(passwordFieldPassword.getPassword())));
             if (result == null) {
                 JOptionPane.showMessageDialog(null, "Your ID or password is wrong");
                 return;
@@ -52,14 +64,15 @@ public class GasStation extends JFrame {
             id = (Integer) result.get("id");;
             JOptionPane.showMessageDialog(null, "Login is successful.");
             
-            // Save employee information
+            // 2) Save employee information
             result = db.getObject(String.format("SELECT manager from employee where id = %d", id));
-            System.out.println(result.get("manager"));
             manager = ((int) result.get("manager")) == 1;
-            System.out.println(manager);
             
+            // 3) Show tab menu if login is successful
+            tabTabPane.setVisible(true);
         });
         // Tabs
+        tabTabPane.setVisible(false);
         tabTabPane.addTab("First Tab", null, createFirstTab(), "My First Tab");
         tabTabPane.addTab("Second Tab", null, createSecondTab(), "My Second Tab");
         
@@ -71,7 +84,7 @@ public class GasStation extends JFrame {
         panelNorth.add(labelId);
         panelNorth.add(textFieldId);
         panelNorth.add(labelPassword);
-        panelNorth.add(textFieldPassword);
+        panelNorth.add(passwordFieldPassword);
         panelNorth.add(new JPanel());
         panelNorth.add(buttonLogin);
         
