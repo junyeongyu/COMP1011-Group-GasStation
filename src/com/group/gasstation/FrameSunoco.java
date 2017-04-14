@@ -6,6 +6,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,10 +36,11 @@ public class FrameSunoco extends JFrame {
     private final JLabel labelPriceValue, labelPrice, labelPreset;
     
     // TextFields
-    private final JTextField textFieldRegular, textFieldPlus, textFieldSupreme;
+    private final Map<Integer, JTextField> textFieldGasCurrentMap;
     
     // Buttons
-    private final JButton buttonRegular, buttonPlus, buttonSupreme, buttonStart, buttonExit;
+    private final JButton buttonStart, buttonExit;
+    private final Map<Integer, JButton> buttonGasTypeMap;
     
     // Sliders
     private final JSlider sliderPreset;
@@ -53,9 +57,10 @@ public class FrameSunoco extends JFrame {
     private final int FRAME_HEIGHT_SOUTH = 240;
     
     // Pricing
-    private final double REGULAR_PRICE = 0.9905;
+    /*private final double REGULAR_PRICE = 0.9905;
     private final double PLUS_PRICE = 1.0905;
-    private final double SUPREME_PRICE = 1.1905;
+    private final double SUPREME_PRICE = 1.1905;*/
+
     
     // Preset Amount
     private int presetAmount = 0;
@@ -67,7 +72,7 @@ public class FrameSunoco extends JFrame {
     
     // Default Constructor
     //public FrameSunoco() {}
-    public FrameSunoco(GasStation main) {
+    public FrameSunoco(GasStation station) {
         super("Pump");
         
         /// 1. Intialize all componentss
@@ -104,16 +109,9 @@ public class FrameSunoco extends JFrame {
         labelPrice = new JLabel("Price Per Liter ¢");
         labelPreset = new JLabel("Preset Purchase Amount");
         // TextFields (Gas grade prices)
-        textFieldRegular = new JTextField(String.format("%.2f", REGULAR_PRICE*100));
-        textFieldRegular.setEditable(false);
-        textFieldPlus = new JTextField(String.format("%.2f", PLUS_PRICE*100));
-        textFieldPlus.setEditable(false);
-        textFieldSupreme = new JTextField(String.format("%.2f", SUPREME_PRICE*100));
-        textFieldSupreme.setEditable(false);
+        textFieldGasCurrentMap = station.getTextFieldGasCurrentMap("price");
         // Buttons
-        buttonRegular = new JButton("Regular");
-        buttonPlus = new JButton("Plus");
-        buttonSupreme = new JButton("Supreme");
+        buttonGasTypeMap = station.getButtonGasTypeMap();
         buttonStart = new JButton("Start");
         buttonExit = new JButton("Exit");
         // Slider
@@ -173,9 +171,12 @@ public class FrameSunoco extends JFrame {
         labelPriceValue.setFont(normalBoldFont);
         labelPrice.setFont(normalBoldFont);
         // TextFields for type of gas
-        textFieldRegular.setFont(normalBoldFont);
-        textFieldPlus.setFont(normalBoldFont);
-        textFieldSupreme.setFont(normalBoldFont);
+        for(Map.Entry<Integer, JTextField> entry: textFieldGasCurrentMap.entrySet()) {
+            JTextField textFieldGasCurrentValue = entry.getValue();
+            textFieldGasCurrentValue.setFont(normalBoldFont);
+            textFieldGasCurrentValue.setEditable(false);
+                    
+        }
         // Label of Preset Purchase Amount
         labelPreset.setFont(normalBoldFont);
         labelPreset.setHorizontalAlignment(SwingConstants.CENTER);
@@ -198,18 +199,24 @@ public class FrameSunoco extends JFrame {
             JButton source = (JButton) e.getSource();
             if(!buttonStart.isEnabled()) buttonStart.setEnabled(true);
             
-            double ppl;
-            if(source == buttonRegular) ppl = REGULAR_PRICE;
-            else if(source == buttonPlus) ppl = PLUS_PRICE;
-            else ppl = SUPREME_PRICE;
+            double ppl = 0.0;
+            for(Map.Entry<Integer, JButton> entry: buttonGasTypeMap.entrySet()) {
+                int buttonGasTypeKey = entry.getKey();
+                JButton buttonGasTypeValue = entry.getValue();
+                if (source == buttonGasTypeValue) {
+                    String priceString = textFieldGasCurrentMap.get(buttonGasTypeKey).getText();
+                    ppl = Double.valueOf(priceString) / 100;
+                }
+            }
             
             gasPricePerLiter = ppl;
             labelPriceValue.setText(String.format("%.2f", ppl*100));
         };
         // add event handler to gas grade buttons
-        buttonRegular.addActionListener(gradeHandler);
-        buttonPlus.addActionListener(gradeHandler);
-        buttonSupreme.addActionListener(gradeHandler);
+        for(Map.Entry<Integer, JButton> entry: buttonGasTypeMap.entrySet()) {
+            JButton buttonGasTypeValue = entry.getValue();
+            buttonGasTypeValue.addActionListener(gradeHandler);
+        }
         // handle start and exit buttons
         buttonStart.setEnabled(false); // Can't pump until choose grade
         buttonStart.addActionListener((e)-> {
@@ -290,12 +297,14 @@ public class FrameSunoco extends JFrame {
         panelSouth.add(panelSouthFirst, BorderLayout.CENTER);
         panelSouth.add(panelSouthSecond, BorderLayout.SOUTH);
         panelSouthFirst.setLayout(new GridLayout(2, 3));
-        panelSouthFirst.add(textFieldRegular);
-        panelSouthFirst.add(textFieldPlus);
-        panelSouthFirst.add(textFieldSupreme);
-        panelSouthFirst.add(buttonRegular);
-        panelSouthFirst.add(buttonPlus);
-        panelSouthFirst.add(buttonSupreme);
+        for(Map.Entry<Integer, JTextField> entry: textFieldGasCurrentMap.entrySet()) {
+            JTextField textFieldGasCurrentValue = entry.getValue();
+            panelSouthFirst.add(textFieldGasCurrentValue);
+        }
+        for(Map.Entry<Integer, JButton> entry: buttonGasTypeMap.entrySet()) {
+            JButton buttonGasTypeValue = entry.getValue();
+            panelSouthFirst.add(buttonGasTypeValue);
+        }
         panelSouthSecond.setLayout(new BorderLayout());
         panelSouthSecond.add(labelPreset, BorderLayout.NORTH);
         panelSouthSecond.add(sliderPreset, BorderLayout.CENTER);
