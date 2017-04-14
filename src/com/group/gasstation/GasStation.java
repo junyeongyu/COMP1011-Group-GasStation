@@ -3,8 +3,11 @@ package com.group.gasstation;
 import com.group.gasstation.db.DBManager;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.Map;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -15,6 +18,11 @@ public class GasStation extends JFrame {
     private JPanel panelNorth, panelCentre,
                    panelFirstTab, panelSecondTab;
     private JTabbedPane tabTabPane;
+    private JLabel labelId, labelPassword;
+    private JTextField textFieldId, textFieldPassword;
+    private JButton buttonLogin;
+    
+    protected int id;
     
     public GasStation() {
         super("Tabs");
@@ -24,9 +32,26 @@ public class GasStation extends JFrame {
         tabTabPane = new JTabbedPane();
         panelNorth = new JPanel();
         panelCentre = new JPanel();
+        labelId = new JLabel("ID");
+        labelPassword = new JLabel("Password");
+        textFieldId = new JTextField(10);
+        textFieldPassword = new JTextField(10);
+        buttonLogin = new JButton("Login");
         
         /// 2. Set properties including eventhandlers
         frameSunoco.setVisible(false);
+        buttonLogin.addActionListener((e) -> {
+            Map<String, Object> result = db.getObject(String.format("SELECT id, password FROM user WHERE id = %s AND password= '%s'", 
+                    textFieldId.getText(), textFieldPassword.getText()));
+            if (result == null) {
+                JOptionPane.showMessageDialog(null, "Your ID or password is wrong");
+                return;
+            }
+            id = (Integer) result.get("id");;
+            JOptionPane.showMessageDialog(null, "Login is successful.");
+            
+        });
+        // Tabs
         tabTabPane.addTab("First Tab", null, createFirstTab(), "My First Tab");
         tabTabPane.addTab("Second Tab", null, createSecondTab(), "My Second Tab");
         
@@ -35,12 +60,12 @@ public class GasStation extends JFrame {
         
         /// 3. Decide relationship between components
         panelNorth.setLayout(new GridLayout(3, 2));
-        panelNorth.add(new JLabel("TEST"));
-        panelNorth.add(new JLabel("TEST"));
-        panelNorth.add(new JLabel("TEST"));
-        panelNorth.add(new JLabel("TEST"));
-        panelNorth.add(new JLabel("TEST"));
-        panelNorth.add(new JLabel("TEST"));
+        panelNorth.add(labelId);
+        panelNorth.add(textFieldId);
+        panelNorth.add(labelPassword);
+        panelNorth.add(textFieldPassword);
+        panelNorth.add(new JPanel());
+        panelNorth.add(buttonLogin);
         
         /// 4. Set components into current class
         setLayout(new BorderLayout());

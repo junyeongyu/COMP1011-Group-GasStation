@@ -217,31 +217,27 @@ public class FrameSunoco extends JFrame {
             if(isPumping)
             {
                 // Create a new thread for pumping gas
-                new Thread(new Runnable() {
-                    @Override
-                    public void run()
+                new Thread(() -> { 
+                    // time trackers for sleep implementation
+                    long now = System.currentTimeMillis();
+                    long then = now;
+                    
+                    while(isPumping)
                     {
-                        // time trackers for sleep implementation
-                        long now = System.currentTimeMillis();
-                        long then = now;
-                        
-                        while(isPumping)
+                        now = System.currentTimeMillis();
+                        if(now - then > 100) // milliseconds to sleep
                         {
-                            now = System.currentTimeMillis();
-                            if(now - then > 100) // milliseconds to sleep
-                            {
-                                then = now;
+                            then = now;
 
-                                // update gas amounts here
-                                gasLiters += 0.01;
-                                gasPrice = gasLiters * gasPricePerLiter;
-                                
-                                updateGasPrice(gasPrice);
-                                updateGasLiters(gasLiters);
-                                
-                                System.out.printf("Cost ($): %.2f\nGas (L): %.2f\n\n",
-                                        gasPrice, gasLiters);
-                            }
+                            // update gas amounts here
+                            gasLiters += 0.01;
+                            gasPrice = gasLiters * gasPricePerLiter;
+
+                            updateGasPrice(gasPrice);
+                            updateGasLiters(gasLiters);
+
+                            System.out.printf("Cost ($): %.2f\nGas (L): %.2f\n\n",
+                                    gasPrice, gasLiters);
                         }
                     }
                 }).start();
