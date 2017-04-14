@@ -105,8 +105,11 @@ public class FrameSunoco extends JFrame {
         labelPreset = new JLabel("Preset Purchase Amount");
         // TextFields (Gas grade prices)
         textFieldRegular = new JTextField(String.format("%.2f", REGULAR_PRICE*100));
+        textFieldRegular.setEditable(false);
         textFieldPlus = new JTextField(String.format("%.2f", PLUS_PRICE*100));
+        textFieldPlus.setEditable(false);
         textFieldSupreme = new JTextField(String.format("%.2f", SUPREME_PRICE*100));
+        textFieldSupreme.setEditable(false);
         // Buttons
         buttonRegular = new JButton("Regular");
         buttonPlus = new JButton("Plus");
