@@ -6,8 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -233,8 +231,7 @@ public class FrameSunoco extends JFrame {
                 // Create a new thread for pumping gas
                 new Thread(() -> { 
                     // time trackers for sleep implementation
-                    long now = System.currentTimeMillis();
-                    long then = now;
+                    long now, then = 0L;
                     
                     while(isPumping)
                     {
