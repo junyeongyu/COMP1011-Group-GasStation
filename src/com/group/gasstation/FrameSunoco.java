@@ -260,7 +260,7 @@ public class FrameSunoco extends JFrame {
         // Button for complete sales: 
         buttonCompleteSales.addActionListener((e) -> {
             // COMPLETE SALE should finish the transaction and update the Global tank as well as write it to the database.
-            Map<String, Object> result = station.db.getObject("SELECT MAX(id) AS id FROM gas_log"); // to insert new id
+            Map<String, Object> result = station.getDBManager().getObject("SELECT MAX(id) AS id FROM gas_log"); // to insert new id
             int id;
             if (result == null)
             {
@@ -272,7 +272,7 @@ public class FrameSunoco extends JFrame {
             }
             
             String sql = "INSERT INTO gas_log (id, gas_id, price, liter, total_price) VALUES (%d, %d, %s, %s, %s)";
-            int resultValue = station.db.execute(String.format(sql, id, gasId, labelPriceValue.getText(), String.valueOf(gasLiters), String.valueOf(gasPrice)));
+            int resultValue = station.getDBManager().execute(String.format(sql, id, gasId, labelPriceValue.getText(), String.valueOf(gasLiters), String.valueOf(gasPrice)));
             if (resultValue > 0)
             {
                 JOptionPane.showMessageDialog(null, "Thank you for your purchage.");

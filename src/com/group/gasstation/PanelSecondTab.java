@@ -8,7 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class PanelSecondTab extends JPanel {
+public final class PanelSecondTab extends JPanel
+{
     private final GasStation station;
     
     private final JPanel pnlContainer, pnlAmount, pnlButton;
@@ -18,15 +19,20 @@ public class PanelSecondTab extends JPanel {
     private final List<JLabel> labelGasTypeList;
     private final List<JTextField> textFieldGasCurrentList;
     
-    //public PanelFirstTab() {}
-    public PanelSecondTab(GasStation gasStation) {
+    /**
+     * Constructor
+     * 
+     * @param gasStation contains JTabbedPane that holds this object
+     */
+    public PanelSecondTab(GasStation gasStation)
+    {
         station = gasStation;
         
         /// 1. Intialize all componentss
         pnlContainer = new JPanel();
         pnlContainer.setLayout(new BorderLayout());
         pnlAmount = new JPanel();
-        pnlAmount.setLayout(new GridLayout(2,4));
+        pnlAmount.setLayout(new GridLayout(2, 4));
         pnlButton = new JPanel();
         pnlButton.setLayout(new BorderLayout());
         
@@ -36,21 +42,23 @@ public class PanelSecondTab extends JPanel {
         textFieldGasCurrentList = station.getTextFieldGasCurrentList("amount");
         
         btnUpdate = new JButton("Update");
-        btnUpdate.setVisible(station.manager);
+        btnUpdate.setVisible(station.getManager());
         
         btnReset = new JButton("Reset");
-        btnReset.setVisible(station.manager);
+        btnReset.setVisible(station.getManager());
         
         /// 2. Set properties including eventhandlers
         
         
         /// 3. Decide relationship between components
         pnlAmount.add(lblType);
-        for (JLabel labelGasType : labelGasTypeList) {
+        for (JLabel labelGasType : labelGasTypeList)
+        {
             pnlAmount.add(labelGasType);
         }
         pnlAmount.add(lblPrice);
-        for (JTextField textFieldGasCurrent : textFieldGasCurrentList) {
+        for (JTextField textFieldGasCurrent : textFieldGasCurrentList)
+        {
             pnlAmount.add(textFieldGasCurrent);
         }
         

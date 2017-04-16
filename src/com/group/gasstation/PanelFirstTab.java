@@ -8,19 +8,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class PanelFirstTab extends JPanel {
+public final class PanelFirstTab extends JPanel
+{
     private final GasStation station;
     
     private final JPanel pnlContainer, pnlPrice, pnlButton;
     private final JLabel lblType, lblPrice;
-    private JTextField txtRPrice, txtPPrice, txtSPrice;
     private final JButton btnUpdate;
     
     private final List<JLabel> labelGasTypeList;
     private final List<JTextField> textFieldGasCurrentList;
     
-    //public PanelFirstTab() {}
-    public PanelFirstTab(GasStation gasStation) {
+    /**
+     * Constructor
+     * 
+     * @param gasStation contains JTabbedPane that holds this object
+     */
+    public PanelFirstTab(GasStation gasStation)
+    {
         station = gasStation;
         
         /// 1. Intialize all componentss
@@ -36,7 +41,7 @@ public class PanelFirstTab extends JPanel {
         textFieldGasCurrentList = station.getTextFieldGasCurrentList("price");
         
         btnUpdate = new JButton("Update");
-        btnUpdate.setVisible(station.manager);
+        btnUpdate.setVisible(station.getManager());
         
         
         /// 2. Set properties including eventhandlers
@@ -44,11 +49,13 @@ public class PanelFirstTab extends JPanel {
         
         /// 3. Decide relationship between components
         pnlPrice.add(lblType);
-        for (JLabel labelGasType : labelGasTypeList) {
+        for (JLabel labelGasType : labelGasTypeList)
+        {
             pnlPrice.add(labelGasType);
         }
         pnlPrice.add(lblPrice);
-        for (JTextField textFieldGasCurrent : textFieldGasCurrentList) {
+        for (JTextField textFieldGasCurrent : textFieldGasCurrentList)
+        {
             pnlPrice.add(textFieldGasCurrent);
         }
         pnlButton.add(btnUpdate);
