@@ -48,6 +48,12 @@ public class GasStation extends JFrame {
         
         /// 2. Set properties including eventhandlers
         //frameSunoco.setVisible(false);
+        textFieldId.addActionListener((e) -> {
+            passwordFieldPassword.grabFocus();
+        });
+        passwordFieldPassword.addActionListener((e) -> {
+            buttonLogin.doClick();
+        });
         buttonLogin.addActionListener((e) -> {
             
             // 0) Validation of form
