@@ -115,7 +115,7 @@ public class GasStation extends JFrame {
         setLayout(new BorderLayout());
         add(panelNorth, BorderLayout.NORTH);
         add(tabTabPane, BorderLayout.CENTER);
-        setSize(1000, 1000);
+        setSize(600, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); //Center the window
         //pack();
