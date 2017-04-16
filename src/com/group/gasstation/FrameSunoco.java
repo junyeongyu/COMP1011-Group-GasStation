@@ -27,13 +27,14 @@ import javax.swing.border.EmptyBorder;
  */
 public class FrameSunoco extends JFrame {
     // Panels
-    private final JPanel panelNorth, panelWest, panelCenter, panelEast, panelSouth, panelSouthFirst, panelSouthSecond, panelSouthSecondSouth;
-    private final JPanel panelCenterFirst, panelCenterSecond, panelCenterThird, panelCenterFourth, panelCenterFifth, panelCenterSixth;
+    private final JPanel panelNorth, panelWest, panelCenter, panelEast, panelSouth,
+            panelSouthFirst, panelSouthSecond, panelSouthSecondSouth,
+            panelCenterFirst, panelCenterSecond, panelCenterThird, panelCenterFourth, panelCenterFifth, panelCenterSixth;
     
     // Labels
-    private final JLabel labelSunoco, labelSaleA, labelSaleB, labelSaleC, labelSaleD, labelSaleE, labelSale;
-    private final JLabel labelLiterA, labelLiterB, labelLiterC, labelLiterD, labelLiterE, labelLiter;
-    private final JLabel labelPriceValue, labelPrice, labelPreset;
+    private final JLabel labelSale, labelSaleA, labelSaleB, labelSaleC, labelSaleD, labelSaleE,
+            labelLiter, labelLiterA, labelLiterB, labelLiterC, labelLiterD, labelLiterE,
+            labelSunoco, labelPriceValue, labelPrice, labelPreset;
     
     // TextFields
     private final Map<Integer, JTextField> textFieldGasCurrentMap;
@@ -56,12 +57,6 @@ public class FrameSunoco extends JFrame {
     private final int FRAME_HEIGHT = 670;
     private final int FRAME_HEIGHT_SOUTH = 240;
     
-    // Pricing
-    /*private final double REGULAR_PRICE = 0.9905;
-    private final double PLUS_PRICE = 1.0905;
-    private final double SUPREME_PRICE = 1.1905;*/
-
-    
     // Preset Amount
     private int presetAmount = 0;
     
@@ -73,9 +68,13 @@ public class FrameSunoco extends JFrame {
     // Gas id - selected by user
     private int gasId;
     
-    // Default Constructor
-    //public FrameSunoco() {}
-    public FrameSunoco(GasStation station) {
+    /**
+     * Constructor
+     * 
+     * @param station Instance of GasStation that leads to FrameSunoco
+     */
+    public FrameSunoco(GasStation station)
+    {
         super("Pump");
         
         /// 1. Intialize all componentss
@@ -174,11 +173,11 @@ public class FrameSunoco extends JFrame {
         labelPriceValue.setFont(normalBoldFont);
         labelPrice.setFont(normalBoldFont);
         // TextFields for type of gas
-        for(Map.Entry<Integer, JTextField> entry: textFieldGasCurrentMap.entrySet()) {
+        for(Map.Entry<Integer, JTextField> entry : textFieldGasCurrentMap.entrySet())
+        {
             JTextField textFieldGasCurrentValue = entry.getValue();
             textFieldGasCurrentValue.setFont(normalBoldFont);
             textFieldGasCurrentValue.setEditable(false);
-                    
         }
         // Label of Preset Purchase Amount
         labelPreset.setFont(normalBoldFont);
@@ -195,15 +194,15 @@ public class FrameSunoco extends JFrame {
         sliderPreset.addChangeListener((e)-> {
             // Update labelPreset when sliderPreset is changed
             presetAmount = sliderPreset.getValue();
-            labelPreset.setText("Preset Purchase Amount" + (presetAmount == 0? "" : " $" + presetAmount));
+            labelPreset.setText("Preset Purchase Amount" + (presetAmount == 0 ? "" : " $" + presetAmount));
         });
         // Gas grade event handler
         ActionListener gradeHandler = (e) -> {
             JButton source = (JButton) e.getSource();
             if(!buttonStart.isEnabled()) buttonStart.setEnabled(true);
             
-            double ppl = 0.0;
-            for(Map.Entry<Integer, JButton> entry: buttonGasTypeMap.entrySet()) {
+            double ppl = 0.0; // Price Per Liter
+            for(Map.Entry<Integer, JButton> entry : buttonGasTypeMap.entrySet()) {
                 int buttonGasTypeKey = entry.getKey();
                 JButton buttonGasTypeValue = entry.getValue();
                 if (source == buttonGasTypeValue) {
@@ -217,7 +216,8 @@ public class FrameSunoco extends JFrame {
             labelPriceValue.setText(String.format("%.2f", ppl*100));
         };
         // add event handler to gas grade buttons
-        for(Map.Entry<Integer, JButton> entry: buttonGasTypeMap.entrySet()) {
+        for(Map.Entry<Integer, JButton> entry : buttonGasTypeMap.entrySet())
+        {
             JButton buttonGasTypeValue = entry.getValue();
             buttonGasTypeValue.addActionListener(gradeHandler);
         }
@@ -262,23 +262,25 @@ public class FrameSunoco extends JFrame {
             // COMPLETE SALE should finish the transaction and update the Global tank as well as write it to the database.
             Map<String, Object> result = station.db.getObject("SELECT MAX(id) AS id FROM gas_log"); // to insert new id
             int id;
-            if (result == null) {
+            if (result == null)
+            {
                 id = 301; // default - starting id
-            } else {
+            }
+            else
+            {
                 id = ((int) result.get("id")) + 1;
             }
             
             String sql = "INSERT INTO gas_log (id, gas_id, price, liter, total_price) VALUES (%d, %d, %s, %s, %s)";
             int resultValue = station.db.execute(String.format(sql, id, gasId, labelPriceValue.getText(), String.valueOf(gasLiters), String.valueOf(gasPrice)));
-            if (resultValue > 0) {
+            if (resultValue > 0)
+            {
                 JOptionPane.showMessageDialog(null, "Thank you for your purchage.");
-            } else {
+            }
+            else
+            {
                 JOptionPane.showMessageDialog(null, "There is temporary transction error.\nPlease try again.");
             }
-            
-            /*if (JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit System?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                System.exit(0);
-            }*/
         });
         
         /// 3. Decide relationship between components
@@ -314,11 +316,13 @@ public class FrameSunoco extends JFrame {
         panelSouth.add(panelSouthFirst, BorderLayout.CENTER);
         panelSouth.add(panelSouthSecond, BorderLayout.SOUTH);
         panelSouthFirst.setLayout(new GridLayout(2, 3));
-        for(Map.Entry<Integer, JTextField> entry: textFieldGasCurrentMap.entrySet()) {
+        for(Map.Entry<Integer, JTextField> entry : textFieldGasCurrentMap.entrySet())
+        {
             JTextField textFieldGasCurrentValue = entry.getValue();
             panelSouthFirst.add(textFieldGasCurrentValue);
         }
-        for(Map.Entry<Integer, JButton> entry: buttonGasTypeMap.entrySet()) {
+        for(Map.Entry<Integer, JButton> entry : buttonGasTypeMap.entrySet())
+        {
             JButton buttonGasTypeValue = entry.getValue();
             panelSouthFirst.add(buttonGasTypeValue);
         }
@@ -338,10 +342,8 @@ public class FrameSunoco extends JFrame {
         add(panelEast, BorderLayout.EAST);
         add(panelSouth, BorderLayout.SOUTH);
         setLocationRelativeTo(null); //Center the window
-        //pack();
         
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        
         addWindowListener(new WindowListener()
         {
             @Override
@@ -358,22 +360,18 @@ public class FrameSunoco extends JFrame {
             public void windowOpened(WindowEvent e) {
                 // do nothing
             }
-
             @Override
             public void windowIconified(WindowEvent e) {
                 // do nothing
             }
-
             @Override
             public void windowDeiconified(WindowEvent e) {
                 // do nothing
             }
-
             @Override
             public void windowActivated(WindowEvent e) {
                 // do nothing
             }
-
             @Override
             public void windowDeactivated(WindowEvent e) {
                 // do nothing
@@ -385,7 +383,11 @@ public class FrameSunoco extends JFrame {
         setVisible(true); // show the window
     }
     
-    // Update required JLabels
+    /**
+     * Only updates JLabels that need to be updated to optimize speed
+     * 
+     * @param price 
+     */
     private void updateGasPrice(double price)
     {
         /*
@@ -424,6 +426,12 @@ public class FrameSunoco extends JFrame {
             }
         }
     }
+    
+    /**
+     * Only updates JLabels that need to be updated to optimize speed
+     * 
+     * @param liters 
+     */
     private void updateGasLiters(double liters)
     {
         /*
@@ -462,61 +470,4 @@ public class FrameSunoco extends JFrame {
             }
         }
     }
-    
-    // Start application
-    public static void main(String[] args) {
-        new FrameSunoco(null);
-    }
 }
-
-
-        /*
-private String[] getValues (double value) {
-        String text = String.valueOf(value);
-        String beforeDot = text.split("\\.")[0];
-        String afterDot = text.split("\\.")[1];
-        String[] numbers = new String [] {"0", "0", "0", "0", "0"};
-        
-        if (beforeDot.length() == 1) {
-            numbers[2] = beforeDot;
-        } else if (beforeDot.length() == 2) {
-            numbers[1] = beforeDot.substring(0,1);
-            numbers[2] = beforeDot.substring(1,2);
-        } else if (beforeDot.length() == 3) {
-            numbers[0] = beforeDot.substring(0,1);
-            numbers[1] = beforeDot.substring(1,2);
-            numbers[2] = beforeDot.substring(2,3);
-        } else {
-            throw new RuntimeException("You can not put more than 999.99");
-        }
-        
-        if (afterDot.length() <= 1) {
-            numbers[3] = afterDot;
-        } else if (afterDot.length() <= 2) {
-            numbers[3] = afterDot.substring(0,1);
-            numbers[4] = afterDot.substring(1,2);
-        }
-        
-        return numbers;
-    }
-    private void setSalesValue(String[] digits) {
-        labelSaleA.setText(digits[0]);
-        labelSaleB.setText(digits[1]);
-        labelSaleC.setText(digits[2]);
-        labelSaleD.setText(digits[3]);
-        labelSaleE.setText(digits[4]);        
-    }
-    private void setSalesValue(double value) {
-        setSalesValue(getValues(value));
-    }
-    private void setLitersValue(String[] digits) {
-        labelLiterA.setText(digits[0]);
-        labelLiterB.setText(digits[1]);
-        labelLiterC.setText(digits[2]);
-        labelLiterD.setText(digits[3]);
-        labelLiterE.setText(digits[4]);        
-    }
-    private void setLitersValue(double value) {
-        setSalesValue(getValues(value));
-    }
-        */
