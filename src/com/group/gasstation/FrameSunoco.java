@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -236,7 +238,7 @@ public class FrameSunoco extends JFrame {
                     while(isPumping)
                     {
                         now = System.currentTimeMillis();
-                        if(now - then > 100) // milliseconds to sleep
+                        if(now - then > 25) // milliseconds to sleep
                         {
                             then = now;
 
@@ -246,9 +248,6 @@ public class FrameSunoco extends JFrame {
 
                             updateGasPrice(gasPrice);
                             updateGasLiters(gasLiters);
-
-                            System.out.printf("Cost ($): %.2f\nGas (L): %.2f\n\n",
-                                    gasPrice, gasLiters);
                         }
                     }
                 }).start();
@@ -333,7 +332,6 @@ public class FrameSunoco extends JFrame {
         /// 4. Set components into current class
         setLayout(new BorderLayout());
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(panelNorth, BorderLayout.NORTH);
         add(panelWest, BorderLayout.WEST);
         add(panelCenter, BorderLayout.CENTER);
@@ -341,10 +339,51 @@ public class FrameSunoco extends JFrame {
         add(panelSouth, BorderLayout.SOUTH);
         setLocationRelativeTo(null); //Center the window
         //pack();
+        
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        
+        addWindowListener(new WindowListener()
+        {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().dispose();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                station.setVisible(true);
+            }
+            
+            @Override
+            public void windowOpened(WindowEvent e) {
+                // do nothing
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                // do nothing
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                // do nothing
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                // do nothing
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                // do nothing
+            }
+            
+        });
+        
+        station.setVisible(false);
         setVisible(true); // show the window
     }
-    
-    
     
     // Update required JLabels
     private void updateGasPrice(double price)
