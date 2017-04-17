@@ -64,7 +64,10 @@ public class GasStation extends JFrame
             {
                 JOptionPane.showMessageDialog(null, "Please input ID");
             }
-            else if (passwordFieldPassword.getPassword().length == 0)
+            else if (textFieldId.getText().matches("\\d+") == false) // if it is not numbers
+            {
+                JOptionPane.showMessageDialog(null, "Please input ID as only numbers");
+            }else if (passwordFieldPassword.getPassword().length == 0)
             {
                 JOptionPane.showMessageDialog(null, "Please input Password");
             }
