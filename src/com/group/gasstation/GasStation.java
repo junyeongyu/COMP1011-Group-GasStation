@@ -3,7 +3,6 @@ package com.group.gasstation;
 import com.group.gasstation.db.DBManager;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,10 +92,12 @@ public class GasStation extends JFrame
                     manager = ((int) result.get("manager")) == 1;
 
                     // 3) Show tab menu if login is successful
+                    panelFirstTab = new PanelFirstTab(this);
+                    panelSecondTab = new PanelSecondTab(this);
                     tabTabPane.removeAll(); // in case, user login more than one times
                     tabTabPane.setVisible(true);
-                    tabTabPane.addTab("First Tab", null, new PanelFirstTab(this), "My First Tab"); // change the location due to life cycle issue
-                    tabTabPane.addTab("Second Tab", null, new PanelSecondTab(this), "My Second Tab"); // change the location due to life cycle issue
+                    tabTabPane.addTab("First Tab", null, panelFirstTab, "My First Tab"); // change the location due to life cycle issue
+                    tabTabPane.addTab("Second Tab", null, panelSecondTab, "My Second Tab"); // change the location due to life cycle issue
 
                     // 4) Show pump
                     buttonPump.setVisible(true);
@@ -164,20 +165,20 @@ public class GasStation extends JFrame
         frameSunoco = new FrameSunoco(this);
     }
     
-    protected List<JLabel> getLabelGasTypeList()
+    protected Map<Integer,JLabel> getLabelGasTypeMap()
     {
-        List<JLabel> labelGasTypeList = new ArrayList<>();
+        Map<Integer,JLabel> map = new LinkedHashMap<>();
         List<Map<String, Object>> gasTypeList = db.getList("SELECT id, gas_name FROM gas_type ORDER BY id ASC");
         
-        for (Map<String, Object> gasType : gasTypeList)
+        for (Map<String, Object> gasType: gasTypeList)
         {
-            labelGasTypeList.add(new JLabel((String) gasType.get("gas_name")));
+            map.put((Integer) gasType.get("id"), new JLabel((String)gasType.get("gas_name")));
         }
         
-        return labelGasTypeList;
+        return map;
     }
     
-    protected List<JTextField> getTextFieldGasCurrentList(String field)
+    /*protected List<JTextField> getTextFieldGasCurrentList(String field)
     {
         List<JTextField> labelGasCurrentList = new ArrayList<>();
         List<Map<String, Object>> gasTypeList = db.getList("SELECT id, amount, price FROM gas_current ORDER BY id ASC");
@@ -188,7 +189,7 @@ public class GasStation extends JFrame
         }
         
         return labelGasCurrentList;
-    }
+    }*/
     
     protected Map<Integer,JButton> getButtonGasTypeMap()
     {

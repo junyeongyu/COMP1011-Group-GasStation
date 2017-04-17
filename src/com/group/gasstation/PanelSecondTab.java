@@ -2,7 +2,7 @@ package com.group.gasstation;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.util.List;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,8 +16,8 @@ public final class PanelSecondTab extends JPanel
     private final JLabel lblType, lblPrice;
     private final JButton btnUpdate, btnReset;
         
-    private final List<JLabel> labelGasTypeList;
-    private final List<JTextField> textFieldGasCurrentList;
+    private final Map<Integer, JLabel> labelGasTypeMap;
+    private final Map<Integer, JTextField> textFieldGasCurrentMap;
     
     /**
      * Constructor
@@ -36,10 +36,10 @@ public final class PanelSecondTab extends JPanel
         pnlButton = new JPanel();
         pnlButton.setLayout(new BorderLayout());
         
-        labelGasTypeList = station.getLabelGasTypeList();
+        labelGasTypeMap = station.getLabelGasTypeMap();
         lblType = new JLabel("Gas Type");
         lblPrice = new JLabel("Amount");
-        textFieldGasCurrentList = station.getTextFieldGasCurrentList("amount");
+        textFieldGasCurrentMap = station.getTextFieldGasCurrentMap("amount");
         
         btnUpdate = new JButton("Update");
         btnUpdate.setVisible(station.getManager());
@@ -52,14 +52,16 @@ public final class PanelSecondTab extends JPanel
         
         /// 3. Decide relationship between components
         pnlAmount.add(lblType);
-        for (JLabel labelGasType : labelGasTypeList)
+        for(Map.Entry<Integer, JLabel> entry : labelGasTypeMap.entrySet())
         {
-            pnlAmount.add(labelGasType);
+            JLabel labelGasTypeValue = entry.getValue();
+            pnlAmount.add(labelGasTypeValue);
         }
         pnlAmount.add(lblPrice);
-        for (JTextField textFieldGasCurrent : textFieldGasCurrentList)
+        for(Map.Entry<Integer, JTextField> entry : textFieldGasCurrentMap.entrySet())
         {
-            pnlAmount.add(textFieldGasCurrent);
+            JTextField textFieldGasCurrentValue = entry.getValue();
+            pnlAmount.add(textFieldGasCurrentValue);
         }
         
         pnlButton.add(btnUpdate, BorderLayout.EAST);
@@ -78,9 +80,10 @@ public final class PanelSecondTab extends JPanel
         btnUpdate.setVisible(manager);
         btnReset.setVisible(manager);
         
-        for(JTextField textField : textFieldGasCurrentList)
+        for(Map.Entry<Integer, JTextField> entry : textFieldGasCurrentMap.entrySet())
         {
-            textField.setEditable(manager);
+            JTextField textFieldGasCurrentValue = entry.getValue();
+            textFieldGasCurrentValue.setEditable(manager);
         }
     }
 }
