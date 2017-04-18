@@ -33,8 +33,8 @@ public class GasStation extends JFrame
     private int id;
     private boolean manager;
     
-    private final int FRAME_WIDTH = 600;
-    private final int FRAME_HEIGHT = 450;
+    private final int FRAME_WIDTH = 400;
+    private final int FRAME_HEIGHT = 300;
     
     public GasStation()
     {
