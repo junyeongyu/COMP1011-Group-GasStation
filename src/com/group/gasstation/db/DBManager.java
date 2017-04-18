@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The class which can connect database.
+ */
 public class DBManager
 {
     private Connection conn;
@@ -22,6 +25,11 @@ public class DBManager
     public static int SUCCESS = 1;
     public static int FAIL = -1;
     
+    /**
+     * Get single row data from database
+     * @param query
+     * @return 
+     */
     public Map<String,Object> getObject(String query)
     {
         List list = getList(query);
@@ -32,12 +40,18 @@ public class DBManager
         
         return getList(query).get(0);
     }
+    
+    /**
+     * Get multi row data from database
+     * @param query
+     * @return 
+     */
     public List<Map<String,Object>> getList(String query)
     {
         List<Map<String,Object>> list = new ArrayList<>();
         try
         {
-            preprocess();
+            preprocess(); // connect database
             
             // create statement object from connection
             stmt = conn.createStatement();
@@ -74,7 +88,7 @@ public class DBManager
         {
             try
             {
-                rs.close();
+                if (rs != null) rs.close();
                 stmt.close();
                 conn.close();
             }
@@ -86,6 +100,12 @@ public class DBManager
         
         return list;
     }
+    
+    /**
+     * Execute query for update/delete/insert
+     * @param query
+     * @return SUCCESS when there is no error
+     */
     public int execute(String query)
     {
         int result = FAIL; // error
@@ -121,6 +141,9 @@ public class DBManager
         return result;  
     }
 
+    /**
+     * Getting connection to database
+     */
     private void preprocess()
     {
         // Database=acsm_855816b26cc82d2;Data Source=us-cdbr-azure-southcentral-e.cloudapp.net;User Id=bdd2a9f50ea66c;Password=aa83c352

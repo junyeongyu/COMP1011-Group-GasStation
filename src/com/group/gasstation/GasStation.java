@@ -17,14 +17,23 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+/**
+ * GasStation class provides updating gas price and amount, and login.
+ */
 public class GasStation extends JFrame
 {
-    private DBManager db;
-    private FrameSunoco frameSunoco;
+    private DBManager db; // for connecting database
+    private FrameSunoco frameSunoco; // pump gui with functions
+    
+    // Panels
     private JPanel panelNorth;
+    
+    // Tabs
     private PanelFirstTab panelFirstTab;
     private PanelSecondTab panelSecondTab;
     private JTabbedPane tabTabPane;
+    
+    // etc components
     private JLabel labelId, labelPassword;
     private JTextField textFieldId;
     private JPasswordField passwordFieldPassword;
@@ -120,13 +129,10 @@ public class GasStation extends JFrame
         });
         buttonPump.setVisible(false);
         buttonPump.addActionListener((e) -> {
-            openPopup();
+            openPopup(); // show the pump
         });
         // Tabs
         tabTabPane.setVisible(false);
-        
-        // TODO: Test (it will be move into neccessary functions)
-        //openPopup();
         
         /// 3. Decide relationship between components
         panelNorth.setLayout(new GridLayout(3, 2));
@@ -173,6 +179,10 @@ public class GasStation extends JFrame
         frameSunoco = new FrameSunoco(this);
     }
     
+    /**
+     * Get gas type data from database.
+     * @return map (id, label)
+     */
     protected Map<Integer,JLabel> getLabelGasTypeMap()
     {
         Map<Integer,JLabel> map = new LinkedHashMap<>();
@@ -185,20 +195,11 @@ public class GasStation extends JFrame
         
         return map;
     }
-    
-    /*protected List<JTextField> getTextFieldGasCurrentList(String field)
-    {
-        List<JTextField> labelGasCurrentList = new ArrayList<>();
-        List<Map<String, Object>> gasTypeList = db.getList("SELECT id, amount, price FROM gas_current ORDER BY id ASC");
-        
-        for (Map<String, Object> gasType : gasTypeList)
-        {
-            labelGasCurrentList.add(new JTextField(String.valueOf(gasType.get(field))));
-        }
-        
-        return labelGasCurrentList;
-    }*/
-    
+
+    /**
+     * Get gas type data from database.
+     * @return map (id, button)
+     */    
     protected Map<Integer,JButton> getButtonGasTypeMap()
     {
         Map<Integer,JButton> map = new LinkedHashMap<>();
@@ -212,6 +213,10 @@ public class GasStation extends JFrame
         return map;
     }
 
+    /**
+     * Get gas current data from database.
+     * @return map (id, textfield)
+     */
     protected Map<Integer, JTextField> getTextFieldGasCurrentMap(String field)
     {
         Map<Integer,JTextField> map = new LinkedHashMap<>();
@@ -225,6 +230,11 @@ public class GasStation extends JFrame
         return map;
     }
     
+    /**
+     * Validate number
+     * @param string
+     * @return true if it is number
+     */
     protected boolean isNumeric(String string) {
         return string.matches("^[-+]?\\d+(\\.\\d+)?$");
     }

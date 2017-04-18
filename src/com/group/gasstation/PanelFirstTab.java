@@ -13,6 +13,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * PanelFirstTab provide updating gas price.
+ */
 public final class PanelFirstTab extends JPanel
 {
     private final GasStation station;
@@ -25,8 +28,7 @@ public final class PanelFirstTab extends JPanel
     private final Map<Integer, JTextField> textFieldGasCurrentMap;
     
     /**
-     * Constructor
-     * 
+     * Constructor with one parameter
      * @param gasStation contains JTabbedPane that holds this object
      */
     public PanelFirstTab(GasStation gasStation)
@@ -103,6 +105,10 @@ public final class PanelFirstTab extends JPanel
         setVisible(true);
     }
     
+    /**
+     * Showing the update button only for manager
+     * @param manager 
+     */
     public void load(boolean manager)
     {
         btnUpdate.setVisible(manager);

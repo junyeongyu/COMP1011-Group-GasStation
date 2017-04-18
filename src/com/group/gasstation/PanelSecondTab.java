@@ -13,6 +13,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * PanelSecondTab provide updating and resetting gas amount.
+ */
 public final class PanelSecondTab extends JPanel
 {
     private final GasStation station;
@@ -25,7 +28,7 @@ public final class PanelSecondTab extends JPanel
     private final Map<Integer, JTextField> textFieldGasCurrentMap;
     
     /**
-     * Constructor
+     * Constructor with one parameter
      * 
      * @param gasStation contains JTabbedPane that holds this object
      */
@@ -114,6 +117,10 @@ public final class PanelSecondTab extends JPanel
         setSize(800, 800);
     }
     
+    /**
+     * Showing the update and reset buttons only for manager
+     * @param manager 
+     */
     public void load(boolean manager)
     {
         btnUpdate.setVisible(manager);

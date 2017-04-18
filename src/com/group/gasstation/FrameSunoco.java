@@ -23,7 +23,6 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * This class provides GUI for user to pump the gas.
- * @author yujun-yeong
  */
 public class FrameSunoco extends JFrame {
     // Panels
@@ -316,12 +315,12 @@ public class FrameSunoco extends JFrame {
         panelSouth.add(panelSouthFirst, BorderLayout.CENTER);
         panelSouth.add(panelSouthSecond, BorderLayout.SOUTH);
         panelSouthFirst.setLayout(new GridLayout(2, 3));
-        for(Map.Entry<Integer, JTextField> entry : textFieldGasCurrentMap.entrySet())
+        for(Map.Entry<Integer, JTextField> entry : textFieldGasCurrentMap.entrySet()) // retrive textfield by order
         {
             JTextField textFieldGasCurrentValue = entry.getValue();
             panelSouthFirst.add(textFieldGasCurrentValue);
         }
-        for(Map.Entry<Integer, JButton> entry : buttonGasTypeMap.entrySet())
+        for(Map.Entry<Integer, JButton> entry : buttonGasTypeMap.entrySet()) // retrive button by order
         {
             JButton buttonGasTypeValue = entry.getValue();
             panelSouthFirst.add(buttonGasTypeValue);
