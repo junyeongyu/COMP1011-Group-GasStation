@@ -89,8 +89,8 @@ public class DBManager
             try
             {
                 if (rs != null) rs.close();
-                stmt.close();
-                conn.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
             }
             catch (SQLException ex)
             {
@@ -129,8 +129,8 @@ public class DBManager
         {
             try
             {
-                stmt.close();
-                conn.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
             }
             catch (SQLException ex)
             {
@@ -160,7 +160,7 @@ public class DBManager
             
             try
             {
-                conn.close();
+                if (conn != null) conn.close();
             }
             catch (SQLException ex)
             {
