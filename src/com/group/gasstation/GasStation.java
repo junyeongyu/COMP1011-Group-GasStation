@@ -224,4 +224,8 @@ public class GasStation extends JFrame
         
         return map;
     }
+    
+    protected boolean isNumeric(String string) {
+        return string.matches("^[-+]?\\d+(\\.\\d+)?$");
+    }
 }

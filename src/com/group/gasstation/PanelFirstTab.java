@@ -1,5 +1,6 @@
 package com.group.gasstation;
 
+import com.group.gasstation.db.DBManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -8,6 +9,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -52,7 +54,30 @@ public final class PanelFirstTab extends JPanel
         
         
         /// 2. Set properties including eventhandlers
-        
+        pnlContainer.setLayout(new BorderLayout());
+        btnUpdate.addActionListener((e) -> {
+            boolean isSuccess = true;
+            for(Map.Entry<Integer, JTextField> entry : textFieldGasCurrentMap.entrySet())
+            {
+                int id = entry.getKey(); // gas id
+                JTextField textFieldGasCurrentValue = entry.getValue(); // gas price
+                
+                String sql = "UPDATE gas_current SET price = %s WHERE id = %d";
+                if (station.isNumeric(textFieldGasCurrentValue.getText()) == false) {
+                    JOptionPane.showMessageDialog(null, "Value needs to be numbers. (id: " + id + ").");
+                    isSuccess = false;
+                    continue;
+                }
+                int result = station.getDBManager().execute(String.format(sql, textFieldGasCurrentValue.getText(), id));
+                if (result == DBManager.FAIL) {
+                    isSuccess = false;
+                    JOptionPane.showMessageDialog(null, "Fail for updating gas price. (id: " + id + ").");
+                }
+            }
+            if (isSuccess) {
+                JOptionPane.showMessageDialog(null, "All data is successful updated.");
+            }
+        });
         
         /// 3. Decide relationship between components
         pnlPrice.add(lblType);

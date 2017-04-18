@@ -19,6 +19,9 @@ public class DBManager
     private Statement stmt;
     private ResultSet rs;
     
+    public static int SUCCESS = 1;
+    public static int FAIL = -1;
+    
     public Map<String,Object> getObject(String query)
     {
         List list = getList(query);
@@ -85,14 +88,14 @@ public class DBManager
     }
     public int execute(String query)
     {
-        int result = -1; // error
+        int result = FAIL; // error
         
         try
         {
             preprocess();
             stmt = conn.createStatement();
             stmt.executeUpdate(query); // UPDATE EMPLOYEE colum='aaa' where id = 'id'
-            result = 1; // sucess
+            result = SUCCESS; // sucess
         }
         catch (SQLException error)
         {

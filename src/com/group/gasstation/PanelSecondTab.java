@@ -42,10 +42,8 @@ public final class PanelSecondTab extends JPanel
         
         labelGasTypeMap = station.getLabelGasTypeMap();
         lblType = new JLabel("Gas Type");
-        lblType.setBorder(BorderFactory.createLineBorder(Color.black));
         lblType.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         lblPrice = new JLabel("Amount");
-        lblPrice.setBorder(BorderFactory.createLineBorder(Color.black));
         lblPrice.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         textFieldGasCurrentMap = station.getTextFieldGasCurrentMap("amount");
         
