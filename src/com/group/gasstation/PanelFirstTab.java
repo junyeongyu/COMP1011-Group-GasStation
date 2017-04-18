@@ -1,8 +1,11 @@
 package com.group.gasstation;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.Map;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,17 +33,21 @@ public final class PanelFirstTab extends JPanel
         
         /// 1. Intialize all componentss
         pnlContainer = new JPanel();
-        pnlContainer.setLayout(new BorderLayout());
+        pnlContainer.setLayout(new BorderLayout()); 
         pnlPrice = new JPanel();
         pnlPrice.setLayout(new GridLayout(2,4));
+        pnlPrice.setBorder(BorderFactory.createLineBorder(Color.black));
         pnlButton = new JPanel();
         
         labelGasTypeMap = station.getLabelGasTypeMap();
         lblType = new JLabel("Gas Type");
+        lblType.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         lblPrice = new JLabel("Price");
+        lblPrice.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         textFieldGasCurrentMap = station.getTextFieldGasCurrentMap("price");
         
         btnUpdate = new JButton("Update");
+        btnUpdate.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
         btnUpdate.setVisible(station.getManager());
         
         

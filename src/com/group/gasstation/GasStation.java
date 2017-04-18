@@ -2,6 +2,7 @@ package com.group.gasstation;
 
 import com.group.gasstation.db.DBManager;
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class GasStation extends JFrame
 {
@@ -43,11 +45,17 @@ public class GasStation extends JFrame
         tabTabPane = new JTabbedPane();
         panelNorth = new JPanel();
         labelId = new JLabel("ID");
+        labelId.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        labelId.setHorizontalAlignment(SwingConstants.CENTER);
         labelPassword = new JLabel("Password");
+        labelPassword.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        labelPassword.setHorizontalAlignment(SwingConstants.CENTER);
         textFieldId = new JTextField(10);
         passwordFieldPassword = new JPasswordField(10);
         buttonLogin = new JButton("Login");
+        buttonLogin.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         buttonPump = new JButton("Pump");
+        buttonPump.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         
         /// 2. Set properties including eventhandlers
         //frameSunoco.setVisible(false);

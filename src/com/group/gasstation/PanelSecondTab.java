@@ -1,8 +1,11 @@
 package com.group.gasstation;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.Map;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,18 +36,25 @@ public final class PanelSecondTab extends JPanel
         pnlContainer.setLayout(new BorderLayout());
         pnlAmount = new JPanel();
         pnlAmount.setLayout(new GridLayout(2, 4));
+        pnlAmount.setBorder(BorderFactory.createLineBorder(Color.black));
         pnlButton = new JPanel();
         pnlButton.setLayout(new BorderLayout());
         
         labelGasTypeMap = station.getLabelGasTypeMap();
         lblType = new JLabel("Gas Type");
+        lblType.setBorder(BorderFactory.createLineBorder(Color.black));
+        lblType.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         lblPrice = new JLabel("Amount");
+        lblPrice.setBorder(BorderFactory.createLineBorder(Color.black));
+        lblPrice.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         textFieldGasCurrentMap = station.getTextFieldGasCurrentMap("amount");
         
         btnUpdate = new JButton("Update");
+        btnUpdate.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
         btnUpdate.setVisible(station.getManager());
         
         btnReset = new JButton("Reset");
+        btnReset.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
         btnReset.setVisible(station.getManager());
         
         /// 2. Set properties including eventhandlers
