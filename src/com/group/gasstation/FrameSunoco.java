@@ -62,7 +62,7 @@ public class FrameSunoco extends JFrame {
     private double gasLiters = 0, gasPrice = 0, gasPricePerLiter = 0;
     
     // true while pumping
-    private boolean isPumping = false;
+    private boolean isPumping = false, preset = false;
     
     // Gas id - selected by user
     private int gasId;
@@ -193,7 +193,8 @@ public class FrameSunoco extends JFrame {
         sliderPreset.addChangeListener((e)-> {
             // Update labelPreset when sliderPreset is changed
             presetAmount = sliderPreset.getValue();
-            labelPreset.setText("Preset Purchase Amount" + (presetAmount == 0 ? "" : " $" + presetAmount));
+            preset = presetAmount != 0;
+            labelPreset.setText("Preset Purchase Amount" + (preset ? " $" + presetAmount : ""));
         });
         // Gas grade event handler
         ActionListener gradeHandler = (e) -> {
@@ -234,29 +235,39 @@ public class FrameSunoco extends JFrame {
                     // time trackers for sleep implementation
                     long now, then = 0L;
                     
+                    for(Map.Entry<Integer, JButton> entry : buttonGasTypeMap.entrySet())
+                    {
+                        entry.getValue().setEnabled(false);
+                    }
+                    
+                    sliderPreset.setEnabled(false);
+                    
                     while(isPumping)
                     {
                         now = System.currentTimeMillis();
-                        if(now - then > 25) // milliseconds to sleep
+                        if(now - then > 20) // milliseconds to sleep
                         {
                             then = now;
-
+                            
                             // update gas amounts here
                             gasLiters += 0.01;
                             gasPrice = gasLiters * gasPricePerLiter;
 
                             updateGasPrice(gasPrice);
                             updateGasLiters(gasLiters);
+                            
+                            if(preset && gasPrice >= presetAmount) isPumping = false;
                         }
                     }
+                    
+                    buttonCompleteSales.setEnabled(true);
+                    buttonStart.setText(!isPumping ? "Start" : "Stop");
+                    buttonStart.setEnabled(false);
                 }).start();
             }
-            else
-            {
-                buttonStart.setEnabled(false);
-            }
         });
-        // Button for complete sales: 
+        // Button for complete sales:
+        buttonCompleteSales.setEnabled(false);
         buttonCompleteSales.addActionListener((e) -> {
             // COMPLETE SALE should finish the transaction and update the Global tank as well as write it to the database.
             Map<String, Object> result = station.getDBManager().getObject("SELECT MAX(id) AS id FROM gas_log"); // to insert new id
@@ -274,7 +285,34 @@ public class FrameSunoco extends JFrame {
             int resultValue = station.getDBManager().execute(String.format(sql, id, gasId, labelPriceValue.getText(), String.valueOf(gasLiters), String.valueOf(gasPrice)));
             if (resultValue > 0)
             {
-                JOptionPane.showMessageDialog(null, "Thank you for your purchage.");
+                JOptionPane.showMessageDialog(null, "Thank you for your purchace.");
+                
+                gasLiters = 0;
+                gasPrice = 0;
+
+                this.labelLiterA.setText("0");
+                this.labelLiterB.setText("0");
+                this.labelLiterC.setText("0");
+                this.labelLiterD.setText("0");
+                this.labelLiterE.setText("0");
+
+                this.labelSaleA.setText("0");
+                this.labelSaleB.setText("0");
+                this.labelSaleC.setText("0");
+                this.labelSaleD.setText("0");
+                this.labelSaleE.setText("0");
+                    
+                for(Map.Entry<Integer, JButton> entry : buttonGasTypeMap.entrySet())
+                {
+                    entry.getValue().setEnabled(true);
+                }
+                    
+                sliderPreset.setEnabled(true);
+                presetAmount = 0;
+                sliderPreset.setValue(presetAmount);
+
+                gasPricePerLiter = 0;
+                labelPriceValue.setText(String.format("%.2f", gasPricePerLiter));
             }
             else
             {
