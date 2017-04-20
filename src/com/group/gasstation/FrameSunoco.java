@@ -313,6 +313,7 @@ public class FrameSunoco extends JFrame {
 
                 gasPricePerLiter = 0;
                 labelPriceValue.setText(String.format("%.2f", gasPricePerLiter));
+                buttonCompleteSales.setEnabled(false);
             }
             else
             {
